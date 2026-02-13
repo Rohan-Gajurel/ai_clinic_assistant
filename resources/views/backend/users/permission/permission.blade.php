@@ -62,7 +62,9 @@
                     <tr>
                         <th scope="col" style="width: 60px;">#</th>
                         <th scope="col">Permission Name</th>
+                        @can('role_permission_manage')
                         <th scope="col" class="text-center" style="width: 150px;">Actions</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -79,6 +81,7 @@
                                 <span class="fw-medium">{{ $permission->name }}</span>
                             </div>
                         </td>
+                        @can('role_permission_manage')
                         <td class="text-center">
                             <a href="{{ route('permissions.edit', $permission->id) }}" class="action-btn edit me-1" title="Edit">
                                 <i class="bi bi-pencil"></i>
@@ -91,6 +94,7 @@
                                 </button>
                             </form>
                         </td>
+                        @endcan
                     </tr>
                     @php $i++; @endphp
                     @endforeach

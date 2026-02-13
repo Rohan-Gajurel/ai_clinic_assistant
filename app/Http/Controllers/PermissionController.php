@@ -19,7 +19,15 @@ class PermissionController extends Controller
     }
 
     public function addPermissions(Request $request){
-        Permission::create(['name'=>$request->permission_name]);
+        $request->validate([
+            'permission_name' => 'required|string|unique:permissions,name',
+        ]);
+
+        Permission::create(['name' => $request->permission_name]);
+
+        // clear Spatie permission cache so new permission is available immediately
+        app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
+
         return redirect()->route('permissions.index')->with('success', 'Permission created successfully.');
 
     }

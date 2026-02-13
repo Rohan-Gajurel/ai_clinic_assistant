@@ -21,11 +21,11 @@
             </ol>
         </nav>
     </div>
-    {{-- @can('role_permission_manage') --}}
+    @can('role_permission_manage')
     <a href="{{ route('roles.create') }}" class="btn btn-primary">
         <i class="bi bi-plus-lg me-2"></i>Add New Role
     </a>
-    {{-- @endcan --}}
+    @endcan
 </div>
 
 <!-- Alert Messages -->
@@ -62,7 +62,9 @@
                     <tr>
                         <th scope="col" style="width: 60px;">#</th>
                         <th scope="col">Role Name</th>
+                        @can('role_permission_manage')
                         <th scope="col" class="text-center" style="width: 150px;">Actions</th>
+                        @endcan
                     </tr>
                 </thead>
                 <tbody>
@@ -79,6 +81,7 @@
                                 <span class="fw-medium">{{ $role->name }}</span>
                             </div>
                         </td>
+                        @can('role_permission_manage')
                         <td class="text-center">
                             <a href="{{ route('roles.edit', $role->id) }}" class="action-btn edit me-1" title="Edit">
                                 <i class="bi bi-pencil"></i>
@@ -91,6 +94,7 @@
                                 </button>
                             </form>
                         </td>
+                        @endcan
                     </tr>
                     @php $i++; @endphp
                     @endforeach

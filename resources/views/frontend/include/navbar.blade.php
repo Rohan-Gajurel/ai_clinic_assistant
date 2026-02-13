@@ -14,8 +14,38 @@
           <li><a href="departments.html">Departments</a></li>
           <li><a href="services.html">Services</a></li>
           <li><a href="doctors.html">Doctors</a></li>
-
           <li><a href="contact.html">Contact</a></li>
+            @if(auth()->check())
+            <li class="dropdown">
+              <a href="#" class="nav-link dropdown-toggle" id="userDropdown" data-bs-toggle="dropdown" aria-expanded="false">
+                <i class="bi bi-person-circle" style="color: var(--primary-color); font-size: 1.25rem;"></i>
+              </a>
+              <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="userDropdown" style="border-radius: 0.75rem; min-width: 220px;">
+                <li class="px-3 py-2 border-bottom">
+                  <div>
+                    <span class="d-block fw-medium">{{ Auth::user()->name ?? 'Admin' }}</span>
+                    <small class="text-muted">{{ Auth::user()->email ?? 'admin@example.com' }}</small>
+                  </div>
+                </li>
+                <li>
+                  <a class="dropdown-item py-2" href="#">
+                   Appointment History
+                  </a>
+                </li>
+                <li><hr class="dropdown-divider"></li>
+                <li>
+                  <form action="{{ route('logout') }}" method="POST">
+                    @csrf
+                    <button type="submit" class="dropdown-item py-2 text-danger">
+                      <i class="bi bi-box-arrow-right me-2"></i>Logout
+                    </button>
+                  </form>
+                </li>
+              </ul>
+            </li>
+            @else
+            <li><a href="{{ route('login') }}">Login</a></li>
+            @endif
         </ul>
         <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
       </nav>

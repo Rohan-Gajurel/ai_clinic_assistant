@@ -27,7 +27,7 @@
 
                 <!-- Appointments -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link {{ request()->routeIs('appointments.*') ? 'active' : '' }}" href="{{ route('appointments.index') }}">
                         <i class="bi bi-calendar-check"></i>
                         Appointments
                     </a>
@@ -35,7 +35,7 @@
 
                 <!-- Patients -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link {{ request()->routeIs('patients.index') ? 'active' : '' }}" href="{{ route('patients.index') }}">
                         <i class="bi bi-person-badge"></i>
                         Patients
                     </a>
@@ -43,7 +43,7 @@
 
                 <!-- Doctors -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link {{ request()->routeIs('doctors.doctors') ? 'active' : '' }}" href="{{ route('doctors.doctors') }}">
                         <i class="bi bi-person-workspace"></i>
                         Doctors
                     </a>
@@ -51,9 +51,9 @@
 
                 <!-- Departments -->
                 <li class="nav-item">
-                    <a class="nav-link" href="#">
+                    <a class="nav-link {{ request()->routeIs('schedules.index') ? 'active' : '' }}" href="{{ route('schedules.index') }}">
                         <i class="bi bi-building"></i>
-                        Departments
+                        Schedules
                     </a>
                 </li>
 
