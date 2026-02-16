@@ -1,211 +1,239 @@
 @extends('frontend.layout')
 
 @section('main')
-  <main class="main">
+<main class="main">
 
-    <!-- Page Title -->
-    <div class="page-title">
-      <div class="heading">
-        <div class="container">
-          <div class="row d-flex justify-content-center text-center">
-            <div class="col-lg-8">
-              <h1 class="heading-title">Appointment</h1>
-              <p class="mb-0">
-                Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo
-                odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum
-                debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat
-                ipsum dolorem.
-              </p>
-            </div>
-          </div>
+<div class="page-title">
+    <div class="heading">
+        <div class="container text-center">
+            <h1>Appointment</h1>
         </div>
-      </div>
-      <nav class="breadcrumbs">
-        <div class="container">
-          <ol>
-            <li><a href="index.html">Home</a></li>
-            <li class="current">Appointment</li>
-          </ol>
-        </div>
-      </nav>
-    </div><!-- End Page Title -->
+    </div>
+</div>
 
-    <!-- Appointmnet Section -->
-    <section id="appointmnet" class="appointmnet section">
+<section class="section">
+<div class="container">
+<div class="row gy-4">
 
-      <div class="container" data-aos="fade-up" data-aos-delay="100">
+<div class="col-lg-6">
+    <h3>Quick & Easy Online Booking</h3>
+    <p>Book your appointment in just a few simple steps.</p>
+</div>
 
-        <div class="row gy-4">
+<div class="col-lg-6">
+<div class="card shadow-sm p-4">
+  @if(session('success'))
+    <div class="alert alert-success">{{ session('success') }}</div>
+  @endif
 
-          <!-- Appointment Info -->
-          <div class="col-lg-6">
-            <div class="appointment-info">
-              <h3>Quick &amp; Easy Online Booking</h3>
-              <p class="mb-4">Book your appointment in just a few simple steps. Our healthcare professionals are ready to provide you with the best medical care tailored to your needs.</p>
+<form action="{{ route('appointments.store') }}" method="POST">
+@csrf
 
-              <div class="info-items">
-                <div class="info-item d-flex align-items-center mb-3" data-aos="fade-up" data-aos-delay="200">
-                  <div class="icon-wrapper me-3">
-                    <i class="bi bi-calendar-check"></i>
-                  </div>
-                  <div>
-                    <h5>Flexible Scheduling</h5>
-                    <p class="mb-0">Choose from available time slots that fit your busy schedule</p>
-                  </div>
-                </div><!-- End Info Item -->
+{{-- GLOBAL ERROR MESSAGE --}}
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul class="mb-0">
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
 
-                <div class="info-item d-flex align-items-center mb-3" data-aos="fade-up" data-aos-delay="250">
-                  <div class="icon-wrapper me-3">
-                    <i class="bi bi-stopwatch"></i>
-                  </div>
-                  <div>
-                    <h5>Quick Response</h5>
-                    <p class="mb-0">Get confirmation within 15 minutes of submitting your request</p>
-                  </div>
-                </div><!-- End Info Item -->
+{{-- Patient --}}
+<div class="mb-3">
+    <label class="form-label">Patient</label>
+    <select name="patient_id" class="form-select" required>
+        <option value="">-- Select Patient --</option>
+        @foreach($patients as $p)
+            <option value="{{ $p->id }}"
+                {{ old('patient_id') == $p->id ? 'selected' : '' }}>
+                {{ optional($p->user)->name }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-                <div class="info-item d-flex align-items-center mb-3" data-aos="fade-up" data-aos-delay="300">
-                  <div class="icon-wrapper me-3">
-                    <i class="bi bi-shield-check"></i>
-                  </div>
-                  <div>
-                    <h5>Expert Medical Care</h5>
-                    <p class="mb-0">Board-certified doctors and specialists at your service</p>
-                  </div>
-                </div><!-- End Info Item -->
-              </div>
+{{-- Doctor --}}
+<div class="mb-3">
+    <label class="form-label">Doctor</label>
+    <select name="doctor_id" id="doctor_id" class="form-select" required>
+        <option value="">-- Select Doctor --</option>
+        @foreach($doctors as $d)
+            <option value="{{ $d->id }}"
+                {{ old('doctor_id') == $d->id ? 'selected' : '' }}>
+                {{ optional($d->user)->name ?? 'Dr. '.$d->id }}
+            </option>
+        @endforeach
+    </select>
+</div>
 
-              <div class="emergency-contact mt-4" data-aos="fade-up" data-aos-delay="350">
-                <div class="emergency-card p-3">
-                  <h6 class="mb-2"><i class="bi bi-telephone-fill me-2"></i>Emergency Hotline</h6>
-                  <p class="mb-0">Call <strong>+1 (555) 911-4567</strong> for urgent medical assistance</p>
-                </div>
-              </div>
+{{-- Date + Slot --}}
+<div class="row">
 
-            </div>
-          </div><!-- End Appointment Info -->
+<div class="col-md-6 mb-3">
+    <label class="form-label">Date</label>
+    <input type="date"
+           name="appointment_date"
+           id="appointment_date"
+           class="form-control"
+           min="{{ date('Y-m-d') }}"
+           value="{{ old('appointment_date') }}"
+           required>
+</div>
 
-          <!-- Appointment Form -->
-          <div class="col-lg-6">
-            <div class="appointment-form-wrapper" data-aos="fade-up" data-aos-delay="200">
-              <form action="forms/appointment.php" method="post" class="appointment-form php-email-form">
-                <div class="row gy-3">
+<div class="col-md-3 mb-3">
+    <label class="form-label">Time Slot</label>
+    <select name="start_time"
+            id="start_time"
+            class="form-select"
+            disabled
+            required>
+        <option value="">-- Select Slot --</option>
+    </select>
+    <small class="text-muted" id="slotHelp">
+        Select doctor and date first
+    </small>
+</div>
 
-                  <div class="col-md-6">
-                    <input type="text" name="name" class="form-control" placeholder="Your Full Name" required="">
-                  </div>
+<div class="col-md-3 mb-3">
+    <label class="form-label">End Time</label>
+    <input type="time"
+           name="end_time"
+           id="end_time"
+           class="form-control"
+           value="{{ old('end_time') }}"
+           readonly
+           required>
+</div>
 
-                  <div class="col-md-6">
-                    <input type="email" name="email" class="form-control" placeholder="Your Email" required="">
-                  </div>
+</div>
 
-                  <div class="col-md-6">
-                    <input type="tel" name="phone" class="form-control" placeholder="Your Phone Number" required="">
-                  </div>
+{{-- Reason --}}
+<div class="mb-3">
+    <label class="form-label">Reason</label>
+    <textarea name="reason"
+              class="form-control"
+              rows="3">{{ old('reason') }}</textarea>
+</div>
 
-                  <div class="col-md-6">
-                    <select name="department" class="form-select" required="">
-                      <option value="">Select Department</option>
-                      <option value="cardiology">Cardiology</option>
-                      <option value="neurology">Neurology</option>
-                      <option value="orthopedics">Orthopedics</option>
-                      <option value="pediatrics">Pediatrics</option>
-                      <option value="dermatology">Dermatology</option>
-                      <option value="general">General Medicine</option>
-                    </select>
-                  </div>
+<button type="submit" class="btn btn-sm btn-primary">
+    Book Appointment
+</button>
 
-                  <div class="col-md-6">
-                    <input type="date" name="date" class="form-control" required="">
-                  </div>
+</form>
+</div>
+</div>
 
-                  <div class="col-md-6">
-                    <select name="doctor" class="form-select" required="">
-                      <option value="">Select Doctor</option>
-                      <option value="dr-johnson">Dr. Sarah Johnson</option>
-                      <option value="dr-martinez">Dr. Michael Martinez</option>
-                      <option value="dr-chen">Dr. Lisa Chen</option>
-                      <option value="dr-patel">Dr. Raj Patel</option>
-                      <option value="dr-williams">Dr. Emily Williams</option>
-                      <option value="dr-thompson">Dr. David Thompson</option>
-                    </select>
-                  </div>
+</div>
+</div>
+</section>
 
-                  <div class="col-12">
-                    <textarea class="form-control" name="message" rows="5" placeholder="Please describe your symptoms or reason for visit (optional)"></textarea>
-                  </div>
-
-                  <div class="col-12">
-                    <div class="loading">Loading</div>
-                    <div class="error-message"></div>
-                    <div class="sent-message">Your appointment request has been sent successfully. We will contact you shortly!</div>
-
-                    <button type="submit" class="btn btn-appointment w-100">
-                      <i class="bi bi-calendar-plus me-2"></i>Book Appointment
-                    </button>
-                  </div>
-
-                </div>
-              </form>
-            </div>
-          </div><!-- End Appointment Form -->
-
-        </div>
-
-        <!-- Process Steps -->
-        <div class="process-steps mt-5" data-aos="fade-up" data-aos-delay="300">
-          <div class="row text-center gy-4">
-            <div class="col-lg-3 col-md-6">
-              <div class="step-item">
-                <div class="step-number">1</div>
-                <div class="step-icon">
-                  <i class="bi bi-person-fill"></i>
-                </div>
-                <h5>Fill Details</h5>
-                <p>Provide your personal information and select your preferred department</p>
-              </div>
-            </div><!-- End Step -->
-
-            <div class="col-lg-3 col-md-6">
-              <div class="step-item">
-                <div class="step-number">2</div>
-                <div class="step-icon">
-                  <i class="bi bi-calendar-event"></i>
-                </div>
-                <h5>Choose Date</h5>
-                <p>Select your preferred date and time slot from available options</p>
-              </div>
-            </div><!-- End Step -->
-
-            <div class="col-lg-3 col-md-6">
-              <div class="step-item">
-                <div class="step-number">3</div>
-                <div class="step-icon">
-                  <i class="bi bi-check-circle"></i>
-                </div>
-                <h5>Confirmation</h5>
-                <p>Receive instant confirmation and appointment details via email or SMS</p>
-              </div>
-            </div><!-- End Step -->
-
-            <div class="col-lg-3 col-md-6">
-              <div class="step-item">
-                <div class="step-number">4</div>
-                <div class="step-icon">
-                  <i class="bi bi-heart-pulse"></i>
-                </div>
-                <h5>Get Treatment</h5>
-                <p>Visit our clinic at your scheduled time and receive quality healthcare</p>
-              </div>
-            </div><!-- End Step -->
-
-          </div>
-        </div><!-- End Process Steps -->
-
-      </div>
-
-    </section><!-- /Appointmnet Section -->
-
-  </main>
-
+</main>
 @endsection
+
+
+@push('script')
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const doctorSelect = document.getElementById('doctor_id');
+    const dateInput    = document.getElementById('appointment_date');
+    const startSelect  = document.getElementById('start_time');
+    const endInput     = document.getElementById('end_time');
+    const slotHelp     = document.getElementById('slotHelp');
+
+    const slotUrl  = "{{ route('doctor.slots') }}";
+    const oldStart = @json(old('start_time'));
+    const urlParams = new URLSearchParams(window.location.search);
+    const paramDoctor = urlParams.get('doctor_id');
+    const paramDate = urlParams.get('date');
+    const paramStart = urlParams.get('start_time');
+    const paramEnd = urlParams.get('end_time');
+
+    function resetSlots(message = 'Select doctor and date first') {
+        startSelect.innerHTML = '<option value="">-- Select Slot --</option>';
+        startSelect.disabled = true;
+        endInput.value = '';
+        slotHelp.textContent = message;
+    }
+
+    async function loadSlots() {
+
+        const doctorId = doctorSelect.value;
+        const date     = dateInput.value;
+
+        resetSlots();
+
+        if (!doctorId || !date) return;
+
+        slotHelp.textContent = 'Loading slots...';
+
+        try {
+            const response = await fetch(
+                `${slotUrl}?doctor_id=${doctorId}&date=${date}`
+            );
+
+            if (!response.ok) {
+                throw new Error('Network error');
+            }
+
+            const slots = await response.json();
+
+            if (!slots || slots.length === 0) {
+                resetSlots('No available slots');
+                return;
+            }
+
+            startSelect.disabled = false;
+            slotHelp.textContent = '';
+
+            slots.forEach(slot => {
+                const option = document.createElement('option');
+                option.value = slot.start_time; // H:i
+                option.textContent = slot.start_time + ' - ' + slot.end_time;
+                option.dataset.end = slot.end_time;
+                startSelect.appendChild(option);
+            });
+
+            // Prefer the start_time from URL params (H:i), otherwise old input
+            const preselected = paramStart || oldStart;
+            if (preselected) {
+                const opt = Array.from(startSelect.options).find(o => o.value === preselected);
+                if (opt) {
+                    startSelect.value = preselected;
+                    startSelect.dispatchEvent(new Event('change'));
+                } else if (paramEnd) {
+                    endInput.value = paramEnd;
+                }
+            } else if (paramEnd) {
+                endInput.value = paramEnd;
+            }
+
+        } catch (error) {
+            console.error(error);
+            resetSlots('Error loading slots');
+        }
+    }
+
+    doctorSelect.addEventListener('change', loadSlots);
+    dateInput.addEventListener('change', loadSlots);
+
+    startSelect.addEventListener('change', function () {
+        const selected = startSelect.selectedOptions[0];
+        endInput.value = selected ? selected.dataset.end : '';
+    });
+
+    // Prefill from URL params if present
+    if (paramDoctor) doctorSelect.value = paramDoctor;
+    if (paramDate) dateInput.value = paramDate;
+
+    if (doctorSelect.value && dateInput.value) {
+        loadSlots();
+    } else {
+        resetSlots();
+    }
+
+});
+</script>
+@endpush

@@ -55,7 +55,7 @@
                         <select name="patient_id" id="patient_id" class="form-select" required>
                             <option value="">-- Select Patient --</option>
                             @foreach($patients as $p)
-                                <option value="{{ $p->id }}" {{ old('patient_id', $appointment->patient_id) == $p->id ? 'selected' : '' }}>{{ $p->name }} ({{ $p->email ?? 'N/A' }})</option>
+                                <option value="{{ $p->id }}" {{ old('patient_id', $appointment->patient_id) == $p->id ? 'selected' : '' }}>{{ optional($p->user)->name }} ({{ optional($p->user)->email ?? 'N/A' }})</option>
                             @endforeach
                         </select>
                     </div>

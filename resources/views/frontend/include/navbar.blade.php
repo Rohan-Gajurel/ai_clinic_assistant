@@ -13,7 +13,7 @@
           <li><a href="about.html">About</a></li>
           <li><a href="departments.html">Departments</a></li>
           <li><a href="services.html">Services</a></li>
-          <li><a href="doctors.html">Doctors</a></li>
+          <li><a href="{{ route('frontend.doctors') }}">Doctors</a></li>
           <li><a href="contact.html">Contact</a></li>
             @if(auth()->check())
             <li class="dropdown">
@@ -28,7 +28,7 @@
                   </div>
                 </li>
                 <li>
-                  <a class="dropdown-item py-2" href="#">
+                  <a class="dropdown-item py-2" href="{{ route('frontend.appointments') }}">
                    Appointment History
                   </a>
                 </li>

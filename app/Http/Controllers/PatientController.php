@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Patient;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class PatientController extends Controller
@@ -10,36 +11,38 @@ class PatientController extends Controller
     //
     public function index()
     {
-        $patients = Patient::all();
+        $patients = Patient::with('user')->get();
         return view('backend.patients.patients', compact('patients'));
     }
 
     public function create()
     {
-        return view('backend.patients.create_patient');
+        // $users = User::whereDoesntHave('patient')->get();
+        $users= User::all();
+        return view('backend.patients.create_patient', compact('users'));
     }
 
     public function store(Request $request)
     {
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:patients,email',
-            'phone' => 'required|string|max:30',
+            'user_id' => 'required|exists:users,id|unique:patients,user_id',
+            'phone' => 'nullable|string|max:30',
             'address' => 'nullable|string',
             'dob' => 'nullable|date',
             'gender' => 'nullable|in:Male,Female,Other',
             'blood_group' => 'nullable|string|max:10',
             'disease' => 'nullable|string',
             'allergies' => 'nullable|string',
+            'emergency_contact' => 'nullable|string|max:30',
         ]);
 
         Patient::create($data);
-        return redirect()->route('patients.index')->with('success', 'Patient created successfully.');
+        return redirect()->route('patients.index')->with('success', 'Patient profile created successfully.');
     }
 
     public function edit($id)
     {
-        $patient = Patient::findOrFail($id);
+        $patient = Patient::with('user')->findOrFail($id);
         return view('backend.patients.edit_patient', compact('patient'));
     }
 
@@ -48,15 +51,14 @@ class PatientController extends Controller
         $patient = Patient::findOrFail($id);
 
         $data = $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:patients,email,' . $patient->id,
-            'phone' => 'required|string|max:30',
+            'phone' => 'nullable|string|max:30',
             'address' => 'nullable|string',
             'dob' => 'nullable|date',
             'gender' => 'nullable|in:Male,Female,Other',
             'blood_group' => 'nullable|string|max:10',
             'disease' => 'nullable|string',
             'allergies' => 'nullable|string',
+            'emergency_contact' => 'nullable|string|max:30',
         ]);
 
         $patient->update($data);

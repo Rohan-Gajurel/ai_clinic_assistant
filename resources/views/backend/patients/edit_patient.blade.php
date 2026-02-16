@@ -50,19 +50,26 @@
                 <form action="{{ route('patients.update', $patient->id) }}" method="POST">
                     @csrf
                     @method('PUT')
-                    <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name', $patient->name) }}" required>
+                    
+                    <!-- User Information (Read-only) -->
+                    <div class="bg-light p-3 rounded mb-4">
+                        <h6 class="mb-3">User Information</h6>
+                        <div class="row">
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Name</label>
+                                <p class="form-control-plaintext">{{ optional($patient->user)->name }}</p>
+                            </div>
+                            <div class="col-md-6 mb-2">
+                                <label class="form-label">Email</label>
+                                <p class="form-control-plaintext">{{ optional($patient->user)->email }}</p>
+                            </div>
+                        </div>
                     </div>
 
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email', $patient->email) }}" required>
-                    </div>
-
+                    <!-- Editable Patient Medical Information -->
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone', $patient->phone) }}" required>
+                        <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone', $patient->phone) }}">
                     </div>
 
                     <div class="mb-3">
@@ -89,6 +96,11 @@
                     <div class="mb-3">
                         <label for="blood_group" class="form-label">Blood Group</label>
                         <input type="text" name="blood_group" id="blood_group" class="form-control" value="{{ old('blood_group', $patient->blood_group) }}">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="emergency_contact" class="form-label">Emergency Contact</label>
+                        <input type="text" name="emergency_contact" id="emergency_contact" class="form-control" value="{{ old('emergency_contact', $patient->emergency_contact) }}">
                     </div>
 
                     <div class="mb-3">

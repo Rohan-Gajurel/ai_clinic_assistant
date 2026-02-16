@@ -51,9 +51,27 @@ class Schedule extends Model
         if (empty($this->days_of_week)) {
             return false;
         }
-        // stored values are weekday names like 'Monday' etc.
-        $dayName = Carbon::parse($date)->format('l');
-        return in_array($dayName, $this->days_of_week);
+
+        $carbon = Carbon::parse($date);
+        $dayFull = strtolower($carbon->format('l')); // monday
+        $dayShort = strtolower($carbon->format('D')); // Mon
+        $dayNumN = (int) $carbon->format('N'); // 1 (Mon) - 7 (Sun)
+        $dayNum0 = (int) $carbon->dayOfWeek; // 0 (Sun) - 6 (Sat)
+
+        foreach ($this->days_of_week as $d) {
+            if (is_null($d) || $d === '') continue;
+            if (is_numeric($d)) {
+                $n = (int) $d;
+                if ($n === $dayNumN || $n === $dayNum0) return true;
+                continue;
+            }
+            $val = strtolower(trim($d));
+            if ($val === $dayFull || $val === strtolower(substr($dayFull,0,3)) || $val === strtolower($dayShort)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

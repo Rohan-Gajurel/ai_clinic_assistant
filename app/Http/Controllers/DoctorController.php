@@ -70,4 +70,10 @@ class DoctorController extends Controller
             return redirect()->route('doctors.doctors')->with('success', 'Doctor deleted successfully.');
         }
 
+    public function frontendDoctors()
+    {
+        $doctors = Doctor::where('status', 'active')->get();
+        return view('frontend.doctors.doctors', compact('doctors'));
+    }
+
 }

@@ -14,13 +14,20 @@ Route::get('/', function () {
     return view('frontend.home');
 })->name('home');
 
-Route::get('/appointment', function () {
-    return view('frontend.appointment');
-})->name('appointment');
+
 
 Route::view('dashboard', 'dashboard')
     ->middleware(['auth', 'verified'])
     ->name('dashboard');
+
+Route::prefix('appointments')->controller(AppointmentController::class)->group(function(){
+    Route::get('/reschedule/{id}', 'reschedule')->name('appointments.reschedule');
+    Route::put('/reschedule/{id}', 'updateReschedule')->name('appointments.storeReschedule');
+    Route::get('/appointment', 'appointmentForm')->name('appointment');
+    Route::get('/doctors-appointments/{id}', 'doctorsAppointments')->name('doctors.appointments');
+});
+
+Route::get('/doctor', [DoctorController::class, 'frontendDoctors'])->name('frontend.doctors');
 
 
 // Backend Routes

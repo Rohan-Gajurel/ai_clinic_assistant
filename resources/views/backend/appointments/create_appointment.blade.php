@@ -50,7 +50,7 @@
                             @foreach($patients as $p)
                                 <option value="{{ $p->id }}"
                                     {{ old('patient_id') == $p->id ? 'selected' : '' }}>
-                                    {{ $p->name }} ({{ $p->email ?? 'N/A' }})
+                                    {{ $p->user->name }} ({{ $p->user->email ?? 'N/A' }})
                                 </option>
                             @endforeach
                         </select>

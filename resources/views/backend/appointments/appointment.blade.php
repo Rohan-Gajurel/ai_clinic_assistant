@@ -56,7 +56,7 @@
                     @foreach($appointments as $appt)
                         <tr>
                             <td>{{ $i }}</td>
-                            <td>{{ optional($appt->patient)->name ?? 'N/A' }}</td>
+                            <td>{{ optional($appt->patient->user)->name ?? 'N/A' }}</td>
                             <td>{{ optional($appt->doctor->user)->name ?? 'Dr. '.$appt->doctor_id }}</td>
                             <td>{{ $appt->appointment_date ? \Carbon\Carbon::parse($appt->appointment_date)->format('Y-m-d') : 'N/A' }}</td>
                             <td>{{ $appt->start_time ? \Carbon\Carbon::parse($appt->start_time)->format('H:i') : 'N/A' }}</td>
@@ -65,7 +65,7 @@
                             <td class="text-center">
                                 <button class="btn btn-sm btn-outline-primary me-1" data-bs-toggle="modal" data-bs-target="#appointmentDetailModal"
                                         data-id="{{ $appt->id }}"
-                                        data-patient="{{ optional($appt->patient)->name }}"
+                                        data-patient="{{ optional($appt->patient->user)->name }}"
                                         data-doctor="{{ optional($appt->doctor->user)->name }}"
                                         data-date="{{ $appt->appointment_date ? \Carbon\Carbon::parse($appt->appointment_date)->format('Y-m-d') : '' }}"
                                         data-start="{{ $appt->start_time ? \Carbon\Carbon::parse($appt->start_time)->format('H:i') : '' }}"

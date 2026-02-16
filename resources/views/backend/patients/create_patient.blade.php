@@ -50,18 +50,20 @@
                 <form action="{{ route('patients.store') }}" method="POST">
                     @csrf
                     <div class="mb-3">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" name="name" id="name" class="form-control" value="{{ old('name') }}" required>
-                    </div>
-
-                    <div class="mb-3">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" name="email" id="email" class="form-control" value="{{ old('email') }}" required>
+                        <label for="user_id" class="form-label">Select User</label>
+                        <select name="user_id" id="user_id" class="form-select" required>
+                            <option value="">-- Select a user --</option>
+                            @foreach ($users as $user)
+                                <option value="{{ $user->id }}" {{ old('user_id') == $user->id ? 'selected' : '' }}>
+                                    {{ $user->name }} ({{ $user->email }})
+                                </option>
+                            @endforeach
+                        </select>
                     </div>
 
                     <div class="mb-3">
                         <label for="phone" class="form-label">Phone Number</label>
-                        <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone') }}" required>
+                        <input type="text" name="phone" id="phone" class="form-control" value="{{ old('phone') }}">
                     </div>
 
                     <div class="mb-3">
@@ -91,6 +93,11 @@
                     </div>
 
                     <div class="mb-3">
+                        <label for="emergency_contact" class="form-label">Emergency Contact</label>
+                        <input type="text" name="emergency_contact" id="emergency_contact" class="form-control" value="{{ old('emergency_contact') }}">
+                    </div>
+
+                    <div class="mb-3">
                         <label for="disease" class="form-label">Disease / Medical History</label>
                         <textarea name="disease" id="disease" rows="3" class="form-control">{{ old('disease') }}</textarea>
                     </div>
@@ -102,7 +109,7 @@
 
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">
-                            <i class="bi bi-plus-lg me-1"></i> Create Patient
+                            <i class="bi bi-plus-lg me-1"></i> Create Patient Profile
                         </button>
                         <a href="{{ route('patients.index') }}" class="btn btn-light">Cancel</a>
                     </div>

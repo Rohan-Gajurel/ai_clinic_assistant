@@ -75,18 +75,18 @@
                         <td class="fw-medium">{{ $i }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($patient->name) }}&background=1bb6b1&color=fff" 
-                                     alt="{{ $patient->name }}" 
+                                <img src="https://ui-avatars.com/api/?name={{ urlencode(optional($patient->user)->name ?? 'Patient') }}&background=1bb6b1&color=fff" 
+                                     alt="{{ optional($patient->user)->name ?? 'Patient' }}" 
                                      class="rounded-circle me-3" 
                                      width="40" 
                                      height="40">
                                 <div>
-                                    <span class="fw-medium d-block">{{ $patient->name }}</span>
+                                    <span class="fw-medium d-block">{{ optional($patient->user)->name ?? 'N/A' }}</span>
                                 </div>
                             </div>
                         </td>
                         <td>
-                            {{ $patient->email ?? 'N/A' }}
+                            {{ optional($patient->user)->email ?? 'N/A' }}
                         </td>
                         <td>
                             {{ $patient->phone ?? 'N/A' }}
@@ -99,8 +99,8 @@
                             <button type="button" class="btn btn-sm btn-outline-primary me-1" 
                                 data-bs-toggle="modal" data-bs-target="#patientDetailModal"
                                 data-id="{{ $patient->id }}"
-                                data-name="{{ $patient->name }}"
-                                data-email="{{ $patient->email }}"
+                                data-name="{{ optional($patient->user)->name ?? 'N/A' }}"
+                                data-email="{{ optional($patient->user)->email ?? 'N/A' }}"
                                 data-phone="{{ $patient->phone ?? 'N/A' }}"
                                 data-dob="{{ $patient->dob ? $patient->dob->format('Y-m-d') : 'N/A' }}"
                                 data-blood="{{ $patient->blood_group ?? 'N/A' }}"

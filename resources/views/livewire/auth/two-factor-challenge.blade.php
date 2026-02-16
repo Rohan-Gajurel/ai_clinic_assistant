@@ -1,95 +1,128 @@
 <x-layouts::auth>
-    <div class="flex flex-col gap-6">
-        <div
-            class="relative w-full h-auto"
-            x-cloak
-            x-data="{
-                showRecoveryInput: @js($errors->has('recovery_code')),
-                code: '',
-                recovery_code: '',
-                toggleInput() {
-                    this.showRecoveryInput = !this.showRecoveryInput;
-
-                    this.code = '';
-                    this.recovery_code = '';
-
-                    $dispatch('clear-2fa-auth-code');
-
-                    $nextTick(() => {
-                        this.showRecoveryInput
-                            ? this.$refs.recovery_code?.focus()
-                            : $dispatch('focus-2fa-auth-code');
-                    });
-                },
-            }"
-        >
-            <div x-show="!showRecoveryInput">
-                <x-auth-header
-                    :title="__('Authentication Code')"
-                    :description="__('Enter the authentication code provided by your authenticator application.')"
-                />
-            </div>
-
-            <div x-show="showRecoveryInput">
-                <x-auth-header
-                    :title="__('Recovery Code')"
-                    :description="__('Please confirm access to your account by entering one of your emergency recovery codes.')"
-                />
-            </div>
-
-            <form method="POST" action="{{ route('two-factor.login.store') }}">
-                @csrf
-
-                <div class="space-y-5 text-center">
-                    <div x-show="!showRecoveryInput">
-                        <div class="flex items-center justify-center my-5">
-                            <flux:otp
-                                x-model="code"
-                                length="6"
-                                name="code"
-                                label="OTP Code"
-                                label:sr-only
-                                class="mx-auto"
-                             />
-                        </div>
-                    </div>
-
-                    <div x-show="showRecoveryInput">
-                        <div class="my-5">
-                            <flux:input
-                                type="text"
-                                name="recovery_code"
-                                x-ref="recovery_code"
-                                x-bind:required="showRecoveryInput"
-                                autocomplete="one-time-code"
-                                x-model="recovery_code"
-                            />
-                        </div>
-
-                        @error('recovery_code')
-                            <flux:text color="red">
-                                {{ $message }}
-                            </flux:text>
-                        @enderror
-                    </div>
-
-                    <flux:button
-                        variant="primary"
-                        type="submit"
-                        class="w-full"
-                    >
-                        {{ __('Continue') }}
-                    </flux:button>
-                </div>
-
-                <div class="mt-5 space-x-0.5 text-sm leading-5 text-center">
-                    <span class="opacity-50">{{ __('or you can') }}</span>
-                    <div class="inline font-medium underline cursor-pointer opacity-80">
-                        <span x-show="!showRecoveryInput" @click="toggleInput()">{{ __('login using a recovery code') }}</span>
-                        <span x-show="showRecoveryInput" @click="toggleInput()">{{ __('login using an authentication code') }}</span>
-                    </div>
-                </div>
-            </form>
-        </div>
+    <div class="auth-header">
+        <h2>Two-Factor Authentication</h2>
+        <p class="text-muted">Enter your authentication code</p>
     </div>
+
+    <!-- Validation Errors -->
+    @if ($errors->any())
+        <div class="alert alert-danger" role="alert">
+            <strong>Verification Failed!</strong>
+            <ul class="mb-0 mt-2">
+                @foreach ($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
+    <form method="POST" action="{{ route('two-factor.login.store') }}" class="needs-validation">
+        @csrf
+
+        <div id="code-container">
+            <div class="form-group">
+                <label for="code" class="form-label">
+                    <i class="bi bi-shield-check me-2" style="color: var(--primary-color);"></i>Authentication Code
+                </label>
+                <input 
+                    id="code"
+                    type="text" 
+                    name="code" 
+                    class="form-control @error('code') is-invalid @enderror"
+                    placeholder="000000"
+                    inputmode="numeric"
+                    maxlength="6"
+                    autocomplete="one-time-code"
+                    required
+                >
+                <small class="text-muted d-block mt-2">
+                    Enter the 6-digit code from your authenticator app.
+                </small>
+                @error('code')
+                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                @enderror
+            </div>
+        </div>
+
+        <div id="recovery-container" style="display: none;">
+            <div class="form-group">
+                <label for="recovery_code" class="form-label">
+                    <i class="bi bi-key me-2" style="color: var(--primary-color);"></i>Recovery Code
+                </label>
+                <input 
+                    id="recovery_code"
+                    type="text" 
+                    name="recovery_code" 
+                    class="form-control @error('recovery_code') is-invalid @enderror"
+                    placeholder="XXXX-XXXX-XXXX"
+                    autocomplete="one-time-code"
+                >
+                <small class="text-muted d-block mt-2">
+                    Enter one of your emergency recovery codes.
+                </small>
+                @error('recovery_code')
+                    <small class="text-danger d-block mt-1">{{ $message }}</small>
+                @enderror
+            </div>
+        </div>
+
+        <!-- Submit Button -->
+        <button type="submit" class="btn btn-primary-auth mb-3">
+            <i class="bi bi-check-circle me-2"></i>Verify
+        </button>
+    </form>
+
+    <!-- Toggle Recovery Code -->
+    <div class="auth-footer text-center">
+        <button type="button" id="toggle-code" class="btn btn-link text-decoration-none" style="padding: 0; color: var(--primary-color); font-size: 0.85rem;">
+            Can't access authenticator app? Use recovery code instead
+        </button>
+    </div>
+
+    <script>
+        const codeContainer = document.getElementById('code-container');
+        const recoveryContainer = document.getElementById('recovery-container');
+        const toggleBtn = document.getElementById('toggle-code');
+        const codeInput = document.getElementById('code');
+        const recoveryInput = document.getElementById('recovery_code');
+
+        toggleBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            if (codeContainer.style.display === 'none') {
+                codeContainer.style.display = 'block';
+                recoveryContainer.style.display = 'none';
+                codeInput.focus();
+                toggleBtn.textContent = 'Can\'t access authenticator app? Use recovery code instead';
+            } else {
+                codeContainer.style.display = 'none';
+                recoveryContainer.style.display = 'block';
+                recoveryInput.focus();
+                toggleBtn.textContent = 'Have your authentication code? Enter it instead';
+            }
+        });
+
+        // Auto-focus on first input
+        @if ($errors->has('recovery_code'))
+            codeContainer.style.display = 'none';
+            recoveryContainer.style.display = 'block';
+            recoveryInput.focus();
+            toggleBtn.textContent = 'Have your authentication code? Enter it instead';
+        @else
+            codeInput.focus();
+        @endif
+    </script>
+
+    <style>
+        .btn-link {
+            border: none;
+            background: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-link:hover {
+            color: #0d9b96 !important;
+            text-decoration: underline !important;
+        }
+    </style>
 </x-layouts::auth>

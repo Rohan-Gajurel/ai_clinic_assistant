@@ -65,4 +65,9 @@ class User extends Authenticatable implements MustVerifyEmail
             ->map(fn ($word) => Str::substr($word, 0, 1))
             ->implode('');
     }
+
+    public function patient()
+    {
+        return $this->hasOne(Patient::class);
+    }
 }

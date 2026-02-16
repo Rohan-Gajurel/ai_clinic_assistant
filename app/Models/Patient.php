@@ -7,8 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Patient extends Model
 {
     protected $fillable = [
-        'name',
-        'email',
+        'user_id',
         'phone',
         'address',
         'dob',
@@ -16,9 +15,15 @@ class Patient extends Model
         'blood_group',
         'disease',
         'allergies',
+        'emergency_contact',
     ];
 
     protected $casts = [
         'dob' => 'date',
     ];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 }
