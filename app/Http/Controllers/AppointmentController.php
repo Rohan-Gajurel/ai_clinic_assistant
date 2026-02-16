@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\AppointmentReminder;
 use App\Models\Appointment;
 use App\Models\Doctor;
 use App\Models\Patient;
 use App\Models\Schedule;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\Request as HttpFoundationRequest;
 
 class AppointmentController extends Controller
@@ -81,9 +84,11 @@ class AppointmentController extends Controller
         }
 
         // Ensure user has a patient profile
-        $patient = auth()->user()->patient;
-        if (!$patient) {
+       if(auth()->user()->hasRole('Patient') && !auth()->user()->patient){
             return redirect()->route('patients.create')->with('error', 'Please complete your patient profile first.');
+        }
+        else if(!auth()->user()->hasRole('Patient') && !$request->patient_id){
+            return redirect()->back()->with('error', 'Please select a patient for this appointment.');
         }
 
         $request->validate([
@@ -112,7 +117,11 @@ class AppointmentController extends Controller
             'created_by' => auth()->id(),
         ]);
 
-        return redirect()->route('frontend.appointments')->with('success', 'Appointment booked successfully!');
+        if (auth()->user()->hasRole('Admin')) {
+            return redirect()->route('appointments.index')->with('success', 'Appointment created successfully.');
+        } else {
+            return redirect()->route('frontend.appointments')->with('success', 'Appointment booked successfully and is pending approval.');
+        }
     }
 
 
@@ -138,10 +147,6 @@ class AppointmentController extends Controller
             'status' => 'required|in:pending,approved,reminded,completed,cancelled',
         ]);
 
-        if($appointment->status !== $data['status'] && in_array($data['status'], ['cancelled', 'approved'])){
-            $data['rescheduled_by'] = auth()->id();
-        }
-
         $appointment->update($data);
 
         return redirect()->route('appointments.index')->with('success', 'Appointment updated successfully.');
@@ -157,17 +162,21 @@ class AppointmentController extends Controller
 
     public function frontendAppointments()
     {
-        // $appointments = Appointment::with('doctor', 'patient')
-        //     ->where('patient_id', auth()->user()->patient->id)
-        //     ->orderBy('appointment_date', 'desc')
-        //     ->get();
-        $appointments=Appointment::all();
+
+        if (auth()->user()->hasRole('Admin')) {
+            return redirect()->route('appointments.index');
+        } 
+        $appointments = Appointment::with('doctor', 'patient')
+                ->where('patient_id', auth()->user()->patient->id)
+                ->orderBy('appointment_date', 'desc')
+                ->get();
 
         return view('frontend.appointments.index', compact('appointments'));
     }
 
     public function reschedule($id)
     {
+        Gate::authorize('reschedule', Appointment::findOrFail($id));
         $appointment = Appointment::with('doctor', 'patient')->findOrFail($id);
         $doctors = Doctor::orderBy('id')->get();
         $patients = Patient::orderBy('id')->get();
@@ -215,6 +224,33 @@ class AppointmentController extends Controller
         }
         else
             {return view('frontend.doctors.doctors_appointment', compact('appointments', 'doctor'));}   
+    }
+
+    public function cancel($id)
+    {
+        // Load appointment (with relations) then authorize the current user against it
+        $appointment = Appointment::with('doctor', 'patient')->findOrFail($id);
+        Gate::authorize('cancel', $appointment);
+        $doctors = Doctor::orderBy('id')->get();
+        $patients = Patient::orderBy('id')->get();
+        return view('frontend.appointments.cancel', compact('appointment', 'doctors', 'patients'));
+    }
+
+
+    public function cancelAppointment(Request $request, $id)
+    {
+        $appointment = Appointment::findOrFail($id);
+
+        $data = $request->validate([
+            'cancel_reason' => 'required|string',
+        ]);
+
+        $data['status'] = 'cancelled';
+
+        $appointment->update($data);
+
+        return redirect()->route('frontend.appointments')->with('success', 'Appointment cancelled successfully.');
+
     }
 
     

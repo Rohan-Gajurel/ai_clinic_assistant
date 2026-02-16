@@ -2,9 +2,12 @@
 
 namespace App\Providers;
 
+use App\Models\Appointment;
+use App\Policies\AppointmentPolicy;
 use Carbon\CarbonImmutable;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Validation\Rules\Password;
 
@@ -46,5 +49,6 @@ class AppServiceProvider extends ServiceProvider
                 ->uncompromised()
             : null
         );
+        Gate::policy(Appointment::class,AppointmentPolicy::class);
     }
 }

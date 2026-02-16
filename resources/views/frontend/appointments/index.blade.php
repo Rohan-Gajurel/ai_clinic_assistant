@@ -41,7 +41,12 @@
                             <td>{{ optional($a->doctor->user)->name ?? 'Dr. ' . $a->doctor_id }}</td>
                             <td>{{ ucfirst($a->status) }}</td>
                             <td>
+                              @can('reschedule', $a)
                               <a href="{{ route('appointments.reschedule', $a->id) }}" class="btn btn-sm btn-outline-primary">Reschedule</a>
+                              @endcan
+                              @can('cancel', $a)
+                              <a href="{{ route('appointments.cancel', $a->id) }}" class="btn btn-sm btn-outline-danger">Cancel</a>
+                              @endcan
                             </td>
                           </tr>
                         @endforeach

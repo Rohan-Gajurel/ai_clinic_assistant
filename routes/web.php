@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\DaashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
@@ -16,9 +17,11 @@ Route::get('/', function () {
 
 
 
-Route::view('dashboard', 'dashboard')
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
+// Route::view('dashboard', 'dashboard')
+//     ->middleware(['auth', 'verified'])
+//     ->name('dashboard');
+
+
 
 Route::prefix('appointments')->controller(AppointmentController::class)->group(function(){
     Route::get('/reschedule/{id}', 'reschedule')->name('appointments.reschedule');
@@ -31,6 +34,14 @@ Route::get('/doctor', [DoctorController::class, 'frontendDoctors'])->name('front
 
 
 // Backend Routes
+Route::middleware(['auth'])->group(function() {
+    Route::get('/dashboard', function () {
+        return DaashboardController::index();
+    })->name('dashboard');
+
+    // Other authenticated routes can be added here
+});
+
 Route::prefix('roles')->controller(RoleController::class)->group(function() {
     Route::get('/', 'index')->name('roles.index');
     Route::get('/create', 'create')->name('roles.create');
@@ -92,6 +103,8 @@ Route::prefix('appointments')->controller(AppointmentController::class)->group(f
     Route::put('/{id}', 'update')->name('appointments.update');
     Route::delete('/{id}', 'destroy')->name('appointments.destroy');
     Route::get('/frontend-appointments', 'frontendAppointments')->name('frontend.appointments');
+    Route::get('/cancel/{id}', 'cancel')->name('appointments.cancel');
+    Route::put('/cancel/{id}', 'cancelAppointment')->name('appointments.cancel');
 });
 
 require __DIR__.'/settings.php';
