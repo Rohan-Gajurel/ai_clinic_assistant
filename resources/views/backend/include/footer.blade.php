@@ -4,7 +4,7 @@
         <div class="col-md-6 text-center text-md-start">
             <span class="text-muted">
                 <script>document.write(new Date().getFullYear())</script> &copy; 
-                <strong style="color: var(--primary-color);">MediNest</strong> Clinic Management System
+                <strong style="color: var(--primary-color);">TeleMed</strong>
             </span>
         </div>
         <div class="col-md-6 text-center text-md-end">

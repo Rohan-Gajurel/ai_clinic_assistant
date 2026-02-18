@@ -6,9 +6,9 @@
             <a href="/" class="text-decoration-none">
                 <h4 class="mb-0 d-flex align-items-center justify-content-center">
                     <i class="bi bi-heart-pulse me-2" style="color: #1bb6b1;"></i>
-                    <span style="color: #fff;">Medi</span><span style="color: #1bb6b1;">Nest</span>
+                    <span style="color: #fff;">Tele</span><span style="color: #1bb6b1;">Med</span>
                 </h4>
-                <small class="text-white-50">Clinic Management</small>
+                {{-- <small class="text-white-50">Clinic Management</small> --}}
             </a>
         </div>
 
@@ -20,6 +20,12 @@
                     <a class="nav-link {{ request()->routeIs('dashboard') ? 'active' : '' }}" href="{{ url('/dashboard') }}">
                         <i class="bi bi-grid-1x2"></i>
                         Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a class="nav-link {{ request()->routeIs('calendar') ? 'active' : '' }}" href="{{ url('/calendar') }}">
+                        <i class="bi bi-calendar"></i>
+                        Calendar
                     </a>
                 </li>
 

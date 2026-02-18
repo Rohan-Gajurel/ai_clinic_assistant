@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
-use App\Http\Controllers\DaashboardController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
@@ -34,13 +34,9 @@ Route::get('/doctor', [DoctorController::class, 'frontendDoctors'])->name('front
 
 
 // Backend Routes
-Route::middleware(['auth'])->group(function() {
-    Route::get('/dashboard', function () {
-        return DaashboardController::index();
-    })->name('dashboard');
-
-    // Other authenticated routes can be added here
-});
+Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+Route::get('/dashboard/events', [DashboardController::class, 'events'])->name('dashboard.events');
+Route::get('/calendar', [DashboardController::class, 'calender'])->name('calendar');
 
 Route::prefix('roles')->controller(RoleController::class)->group(function() {
     Route::get('/', 'index')->name('roles.index');
