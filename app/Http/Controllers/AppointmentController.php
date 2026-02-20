@@ -69,11 +69,12 @@ class AppointmentController extends Controller
         return view('backend.appointments.appointment', compact('appointments'));
     }
 
-    public function create()
+    public function create($patient_id = null)
     {
         $doctors = Doctor::orderBy('id')->get();
-        $patients = Patient::orderBy('id')->get();
-        return view('backend.appointments.create_appointment', compact('doctors', 'patients',));
+        $patients = Patient::with('user')->orderBy('id')->get();
+        $selected_patient_id = $patient_id ? (int)$patient_id : null;
+        return view('backend.appointments.create_appointment', compact('doctors', 'patients', 'selected_patient_id'));
     }
 
     public function store(Request $request)
@@ -106,6 +107,7 @@ class AppointmentController extends Controller
         if ($exists) {
             return back()->withErrors(['error' => 'This slot is already booked.']);
         }
+        $patient = auth()->user()->patient ?? null;
 
         $patientId = $request->patient_id ?: $patient->id;
         Appointment::create([

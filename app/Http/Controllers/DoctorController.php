@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Doctor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class DoctorController extends Controller
 {
@@ -22,6 +23,7 @@ class DoctorController extends Controller
 
     public function store(Request $request)
     {
+        
         $data = $request->validate([
             'user_id' => 'required|exists:users,id',
             'specialization' => 'required|string|max:150',
@@ -30,9 +32,15 @@ class DoctorController extends Controller
             'contact_number' => 'required|string|max:30',
             'bio' => 'nullable|string',
             'status' => 'required|in:active,inactive',
+            'qualification' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|image|max:2048',
         ]);
-
-        $doctor = \App\Models\Doctor::create($data);
+        if ($request->hasFile('profile_picture')) {
+            $data['profile_picture'] = $request->file('profile_picture')->store('doctors', 'public');
+        }
+        
+        $doctor = Doctor::create($data);
 
         return redirect()->route('doctors.doctors')->with('success', 'Doctor created successfully.');
     }
@@ -55,8 +63,13 @@ class DoctorController extends Controller
             'contact_number' => 'required|string|max:30',
             'bio' => 'nullable|string',
             'status' => 'required|in:active,inactive',
+            'qualification' => 'nullable|string|max:255',
+            'department' => 'nullable|string|max:255',
+            'profile_picture' => 'nullable|image|max:2048',
         ]);
-
+        if ($request->hasFile('profile_picture')) {
+            $data['profile_picture'] = $request->file('profile_picture')->store('doctors', 'public');
+        }
         $doctor->update($data);
 
         return redirect()->route('doctors.doctors')->with('success', 'Doctor updated successfully.');

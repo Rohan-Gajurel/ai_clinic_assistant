@@ -2,12 +2,17 @@
 
 use App\Http\Controllers\AppointmentController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
+use App\Http\Controllers\FollowupController;
+use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\ReminderController;
 use App\Http\Controllers\ScheduleController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\VisitController;
 use Illuminate\Support\Facades\Route;
 use Termwind\Components\Raw;
 
@@ -31,6 +36,13 @@ Route::prefix('appointments')->controller(AppointmentController::class)->group(f
 });
 
 Route::get('/doctor', [DoctorController::class, 'frontendDoctors'])->name('frontend.doctors');
+
+Route::get('/followup', [FollowupController::class, 'frontendFollowups'])->name('frontend.followups');
+
+Route::prefix('feedback')->controller(FeedbackController::class)->group(function(){
+    Route::get('/create', 'create')->name('feedback.create');
+    Route::post('/', 'store')->name('feedback.store');
+});
 
 
 // Backend Routes
@@ -86,6 +98,7 @@ Route::prefix('patients')->controller(PatientController::class)->group(function(
     Route::get('/create', 'create')->name('patients.create');
     Route::post('/', 'store')->name('patients.store');
     Route::get('/{id}/edit', 'edit')->name('patients.edit');
+    Route::get('/{id}/visit', 'visitDetails')->name('patients.visitDetails');
     Route::put('/{id}', 'update')->name('patients.update');
     Route::delete('/{id}', 'destroy')->name('patients.destroy');
 });
@@ -93,7 +106,7 @@ Route::get('/doctor-slots', [AppointmentController::class, 'getDoctorSlots'])->n
 
 Route::prefix('appointments')->controller(AppointmentController::class)->group(function(){
     Route::get('/', 'index')->name('appointments.index');
-    Route::get('/create/{id}', 'create')->name('appointments.create');
+    Route::get('/create/{patient_id}', 'create')->name('appointments.create');
     Route::post('/', 'store')->name('appointments.store');
     Route::get('/{id}/edit', 'edit')->name('appointments.edit');
     Route::put('/{id}', 'update')->name('appointments.update');
@@ -101,6 +114,42 @@ Route::prefix('appointments')->controller(AppointmentController::class)->group(f
     Route::get('/frontend-appointments', 'frontendAppointments')->name('frontend.appointments');
     Route::get('/cancel/{id}', 'cancel')->name('appointments.cancel');
     Route::put('/cancel/{id}', 'cancelAppointment')->name('appointments.cancel');
+});
+
+Route::prefix('followups')->controller(FollowupController::class)->group(function(){
+    Route::get('/', 'index')->name('followups.index');
+    Route::get('/create', 'create')->name('followups.create');
+    Route::post('/', 'store')->name('followups.store');
+    Route::patch('/{id}', 'update')->name('followups.update');
+    Route::delete('/{id}', 'destroy')->name('followups.destroy');
+});
+
+Route::prefix('feedback')->controller(FeedbackController::class)->group(function(){
+    Route::get('/', 'index')->name('feedback.index');
+    Route::get('/create', 'create')->name('feedback.create');
+    Route::post('/', 'store')->name('feedback.store');
+});
+
+Route::prefix('reminders')->controller(ReminderController::class)->group(function(){
+    Route::get('/', 'index')->name('reminders.index');
+    Route::get('/create', 'create')->name('reminders.create');
+    Route::post('/', 'store')->name('reminders.store');
+    Route::patch('/{id}', 'update')->name('reminders.update');
+    Route::delete('/{id}', 'destroy')->name('reminders.destroy');
+});
+
+Route::prefix('departments')->controller(DepartmentController::class)->group(function(){
+    Route::get('/', 'index')->name('departments.index');
+    Route::get('/create', 'create')->name('departments.create');
+    Route::post('/', 'store')->name('departments.store');
+    Route::get('/{id}/edit', 'edit')->name('departments.edit');
+    Route::put('/{id}', 'update')->name('departments.update');
+    Route::delete('/{id}', 'destroy')->name('departments.destroy');
+});
+
+Route::prefix('visit')->controller(VisitController::class)->group(function(){
+    Route::post('/store-examination', 'storeExamination')->name('visit.storeExamination');
+    Route::post('/store-vitals', 'upsertVitals')->name('visit.storeVitals');
 });
 
 require __DIR__.'/settings.php';

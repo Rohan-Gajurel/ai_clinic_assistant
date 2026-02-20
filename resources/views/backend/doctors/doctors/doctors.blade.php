@@ -64,6 +64,7 @@
                         <th scope="col" style="width:320px; min-width:200px;">Name</th>
                         <th scope="col" style="width:220px; min-width:150px;">Specialization</th>
                         <th scope="col" style="width:140px; min-width:100px;">Status</th>
+                        <th scope="col" class="text-center" style="width:150px;">Qualification</th>
                         <th scope="col" class="text-center" style="width:150px;">Actions</th>
                     </tr>
                 </thead>
@@ -74,11 +75,7 @@
                         <td class="fw-medium">{{ $i }}</td>
                         <td>
                             <div class="d-flex align-items-center">
-                                <img src="https://ui-avatars.com/api/?name={{ urlencode($doctor->user->name) }}&background=1bb6b1&color=fff" 
-                                     alt="{{ $doctor->user->name }}" 
-                                     class="rounded-circle me-3" 
-                                     width="40" 
-                                     height="40">
+                                <img src="{{ $doctor->profile_picture ? asset('storage/' . $doctor->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($doctor->user->name) . '&background=1bb6b1&color=fff&size=200' }}" alt="avatar" class="rounded-circle me-3" width="50" height="50">
                                 <div>
                                     <span class="fw-medium d-block">{{ $doctor->user->name }}</span>
                                 </div>
@@ -102,6 +99,7 @@
                                 </span>
                             @endif
                         </td>
+                        <td class="text-center">{{ $doctor->qualification ?? 'N/A' }}</td>
                         <td class="text-center">
                             <!-- View (eye) button - always visible -->
                             <button type="button" class="btn btn-sm btn-outline-primary me-1" 
@@ -220,11 +218,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
 <script>
 // populate avatar src when modal shows
+// Ensure dynamic avatar updates correctly
 document.addEventListener('show.bs.modal', function (event) {
         if (event.target.id !== 'doctorDetailModal') return;
         var button = event.relatedTarget;
-        var name = button.getAttribute('data-name');
-        var avatar = 'https://ui-avatars.com/api/?name=' + encodeURIComponent(name) + '&background=1bb6b1&color=fff&size=200';
+        var avatar = button.getAttribute('data-avatar') || 'https://ui-avatars.com/api/?name=' + encodeURIComponent(button.getAttribute('data-name')) + '&background=1bb6b1&color=fff&size=200';
         var img = document.getElementById('docAvatar');
         if (img) img.src = avatar;
 });

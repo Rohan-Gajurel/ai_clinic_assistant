@@ -87,7 +87,7 @@
                 <div class="col-lg-3 col-md-6 doctor-item isotope-item filter-{{ $doctor->department }}">
                   <article class="doctor-card h-100">
                     <figure class="doctor-media">
-                      <img src="{{ asset('assets/img/health/staff-' . $doctor->id . '.webp') }}" class="img-fluid" alt="{{ $doctor->name }}" loading="lazy">
+                      <img src="{{ $doctor->profile_picture ? asset('storage/' . $doctor->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($doctor->user->name) . '&background=1bb6b1&color=fff&size=200' }}" alt="{{ $doctor->user->name }}" class="img-fluid" loading="lazy">
                       @if($doctor->designation)
                       <span class="tag">{{ $doctor->designation }}</span>
                       @endif
@@ -118,7 +118,7 @@
             @foreach ($doctors as $doctor)
                             <div class="col-6 col-md-4 col-lg-2" data-aos="fade-up" data-aos-delay="100">
               <div class="minimal-card text-center">
-                <img src="{{ asset('assets/img/health/staff-' . $doctor->id . '.webp') }}" alt="{{ $doctor->user->name }}" class="avatar img-fluid" loading="lazy">
+                <img src="{{ $doctor->profile_picture ? asset('storage/' . $doctor->profile_picture) : 'https://ui-avatars.com/api/?name=' . urlencode($doctor->user->name) . '&background=1bb6b1&color=fff&size=200' }}" alt="{{ $doctor->user->name }}" class="avatar img-fluid" loading="lazy">
                 <div class="info">
                   <h4 class="mb-0">{{ $doctor->user->name }}</h4>
                   <small> {{ $doctor->department }} </small>

@@ -21,8 +21,8 @@ for ($i = 0; $i < 14; $i++) {
                 
                 {{-- Profile Image --}}
                 <div class="shrink-0 text-center">
-                    @if(optional($doctor->user)->profile_photo_path)
-                        <img src="{{ asset(optional($doctor->user)->profile_photo_path) }}"
+                    @if($doctor->profile_picture)
+                        <img src="{{ asset('storage/' . $doctor->profile_picture)  }}"
                              alt="{{ optional($doctor->user)->name }}"
                              class="rounded shadow"
                              style="width:120px;height:120px;object-fit:cover;" />
@@ -114,6 +114,9 @@ for ($i = 0; $i < 14; $i++) {
                                             <input type="hidden" name="appointment_date" value="{{ $date->format('Y-m-d') }}">
                                             <input type="hidden" name="start_time" value="{{ Carbon::parse($slot['start_time'])->format('H:i') }}">
                                             <input type="hidden" name="end_time" value="{{ Carbon::parse($slot['end_time'])->format('H:i') }}">
+                                            @if(auth()->check() && auth()->user()->patient)
+                                                <input type="hidden" name="patient_id" value="{{ auth()->user()->patient->id }}">
+                                            @endif
 
                                             <button type="submit"
                                                     class="btn btn-sm btn-outline-primary"

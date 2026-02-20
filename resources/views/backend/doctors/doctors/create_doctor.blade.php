@@ -28,7 +28,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-6">
+    <div class="col-lg-12">
         <div class="card">
             <div class="card-header">
                 <h5 class="card-title mb-0">
@@ -47,7 +47,7 @@
                 </div>
             @endif
             <div class="card-body">
-                <form action="{{ route('doctors.store') }}" method="POST">
+                <form action="{{ route('doctors.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="user_id" class="form-label">
@@ -97,6 +97,27 @@
                             <option value="inactive">Inactive</option>
                         </select>
                     </div>
+                    <div class="mb-4">
+                        <label for="qualification" class="form-label">Qualification</label>
+                        <input type="text" name="qualification" id="qualification" class="form-control" placeholder="e.g. MBBS, MD" required>
+                    </div>
+                    <div class="d-flex gap-2">
+                        <label for="department" class="form-label">Department</label>
+                        <select name="department" id="department" class="form-select">
+                            <option value="">-- Select Department --</option>
+                            <option value="Cardiology">Cardiology</option>
+                            <option value="Dermatology">Dermatology</option>
+                            <option value="Neurology">Neurology</option>
+                            <option value="Pediatrics">Pediatrics</option>
+                            <option value="Radiology">Radiology</option>
+                            <option value="Surgery">Surgery</option>
+                            <option value="Other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mb-4">
+                        <label for="profile_picture" class="form-label">Profile Picture </label>
+                        <input type="file" name="profile_picture" id="profile_picture" class="form-control">
+                    </div>
                     <div class="d-flex gap-2">
                         <button type="submit" class="btn btn-primary">
                             <i class="bi bi-plus-lg me-1"></i> Create Doctor
@@ -104,36 +125,6 @@
                         <a href="{{ route('doctors.doctors') }}" class="btn btn-light">Cancel</a>
                     </div>
                 </form>
-            </div>
-        </div>
-    </div>
-    <div class="col-lg-6">
-        <div class="card">
-            <div class="card-header">
-                <h5 class="card-title mb-0">
-                    <i class="bi bi-lightbulb me-2" style="color: var(--primary-color);"></i>Common Permission Names
-                </h5>
-            </div>
-            <div class="card-body">
-                <p class="text-muted mb-3">Here are some common permission naming conventions:</p>
-                <div class="row">
-                    <div class="col-6">
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><code>view_patients</code></li>
-                            <li class="mb-2"><code>create_patients</code></li>
-                            <li class="mb-2"><code>edit_patients</code></li>
-                            <li class="mb-2"><code>delete_patients</code></li>
-                        </ul>
-                    </div>
-                    <div class="col-6">
-                        <ul class="list-unstyled">
-                            <li class="mb-2"><code>manage_appointments</code></li>
-                            <li class="mb-2"><code>view_reports</code></li>
-                            <li class="mb-2"><code>manage_billing</code></li>
-                            <li class="mb-2"><code>admin_access</code></li>
-                        </ul>
-                    </div>
-                </div>
             </div>
         </div>
     </div>

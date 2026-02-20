@@ -24,7 +24,7 @@
 </div>
 
 <div class="row">
-    <div class="col-lg-8">
+    <div class="col-lg-12">
         <div class="card shadow-sm">
             <div class="card-body">
 
@@ -41,23 +41,23 @@
 
                 <form action="{{ route('appointments.store') }}" method="POST">
                     @csrf
-
-                    {{-- Patient --}}
-                    <div class="mb-3">
+                    <div class="row">
+                        {{-- Patient --}}
+                        <div class="col-md-6 mb-3">
                         <label class="form-label">Patient</label>
                         <select name="patient_id" class="form-select" required>
                             <option value="">-- Select Patient --</option>
                             @foreach($patients as $p)
                                 <option value="{{ $p->id }}"
-                                    {{ old('patient_id') == $p->id ? 'selected' : '' }}>
-                                    {{ $p->user->name }} ({{ $p->user->email ?? 'N/A' }})
+                                    {{ old('patient_id', $selected_patient_id ?? null) == $p->id ? 'selected' : '' }}>
+                                    {{ $p->full_name ?? 'N/A' }} ({{ $p->contact_number ?? 'N/A' }})
                                 </option>
                             @endforeach
                         </select>
                     </div>
 
                     {{-- Doctor --}}
-                    <div class="mb-3">
+                    <div class="col-md-6 mb-3">
                         <label class="form-label">Doctor</label>
                         <select name="doctor_id" id="doctor_id" class="form-select" required>
                             <option value="">-- Select Doctor --</option>
@@ -110,7 +110,7 @@
 
                     {{-- Reason --}}
                     <div class="mb-3">
-                        <label class="form-label">Reason</label>
+                        <label class="form-label">Notes</label>
                         <textarea name="reason"
                                   class="form-control"
                                   rows="3">{{ old('reason') }}</textarea>

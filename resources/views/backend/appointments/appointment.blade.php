@@ -56,7 +56,7 @@
                     @foreach($appointments as $appt)
                         <tr>
                             <td>{{ $i }}</td>
-                            <td>{{ optional($appt->patient->user)->name ?? 'N/A' }}</td>
+                            <td>{{ $appt->patient->full_name ?? 'N/A' }}</td>
                             <td>{{ optional($appt->doctor->user)->name ?? 'Dr. '.$appt->doctor_id }}</td>
                             <td>{{ $appt->appointment_date ? \Carbon\Carbon::parse($appt->appointment_date)->format('Y-m-d') : 'N/A' }}</td>
                             <td>{{ $appt->start_time ? \Carbon\Carbon::parse($appt->start_time)->format('H:i') : 'N/A' }}</td>

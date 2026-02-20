@@ -47,19 +47,35 @@
                     </a>
                 </li>
 
-                <!-- Doctors -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('doctors.doctors') ? 'active' : '' }}" href="{{ route('doctors.doctors') }}">
-                        <i class="bi bi-person-workspace"></i>
-                        Doctors
-                    </a>
-                </li>
 
                 <!-- Departments -->
                 <li class="nav-item">
                     <a class="nav-link {{ request()->routeIs('schedules.index') ? 'active' : '' }}" href="{{ route('schedules.index') }}">
                         <i class="bi bi-building"></i>
                         Schedules
+                    </a>
+                </li>
+
+                <!-- Follow-ups -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('followups.index') ? 'active' : '' }}" href="{{ route('followups.index') }}">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Follow-ups
+                    </a>
+                </li>
+
+                <!-- Feedbacks -->
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('feedback.index') ? 'active' : '' }}" href="{{ route('feedback.index') }}">
+                        <i class="bi bi-chat-dots"></i>
+                        Feedbacks
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('reminders.index') ? 'active' : '' }}" href="{{ route('reminders.index') }}">
+                        <i class="bi bi-bell"></i>
+                        Reminders
                     </a>
                 </li>
 
@@ -90,6 +106,29 @@
                                 <a class="nav-link {{ request()->routeIs('permissions.*') ? 'active' : '' }}" href="{{ route('permissions.index') }}">
                                     <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
                                     Permissions
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center {{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#doctorSubmenu" role="button" aria-expanded="{{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'true' : 'false' }}" aria-controls="doctorSubmenu">
+                        <i class="bi bi-people"></i>
+                        <span class="flex-grow-1">Doctor Management</span>
+                        <i class="bi bi-chevron-down ms-auto" style="font-size: 0.75rem;"></i>
+                    </a>
+                    <div class="collapse submenu {{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'show' : '' }}" id="doctorSubmenu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('doctors.doctors') ? 'active' : '' }}" href="{{ route('doctors.doctors') }}">
+                                    <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
+                                    All Doctors
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('departments.*') ? 'active' : '' }}" href="{{ route('departments.index') }}">
+                                    <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
+                                    Departments
                                 </a>
                             </li>
                         </ul>

@@ -4,21 +4,21 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Appointment extends Model
+class Feedback extends Model
 {
-    //
     protected $fillable = [
         'doctor_id',
         'patient_id',
-        'appointment_date',
-        'start_time',
-        'end_time',
-        'status',
-        'reason',
-        'cancel_reason',
-        'rescheduled_by',
-        'created_by',
+        'rating',
+        'review',
+        'would_recommend',
     ];
+
+    protected $casts = [
+        'would_recommend' => 'boolean',
+    ];
+
+    protected $table= 'feedbacks';
 
     public function doctor()
     {
@@ -28,10 +28,5 @@ class Appointment extends Model
     public function patient()
     {
         return $this->belongsTo(Patient::class);
-    }
-
-    public function followups()
-    {
-        return $this->hasMany(Followup::class);
     }
 }

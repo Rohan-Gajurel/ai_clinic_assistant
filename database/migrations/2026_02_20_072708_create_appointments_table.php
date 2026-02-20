@@ -43,6 +43,7 @@ return new class extends Migration
                   ->onDelete('cascade');
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->unique(
                 ['doctor_id', 'appointment_date', 'start_time'],

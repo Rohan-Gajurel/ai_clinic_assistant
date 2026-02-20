@@ -14,6 +14,9 @@ class Doctor extends Model
         'contact_number',
         'bio',
         'status',
+        'qualification',
+        'department',
+        'profile_picture',
     ];
 
     public function user()
