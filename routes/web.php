@@ -150,6 +150,7 @@ Route::prefix('departments')->controller(DepartmentController::class)->group(fun
 Route::prefix('visit')->controller(VisitController::class)->group(function(){
     Route::post('/store-examination', 'storeExamination')->name('visit.storeExamination');
     Route::post('/store-vitals', 'upsertVitals')->name('visit.storeVitals');
+    Route::post('/store-disease-history', 'storeDiseaseHistory')->name('visit.storeDiseaseHistory');
 });
 
 require __DIR__.'/settings.php';

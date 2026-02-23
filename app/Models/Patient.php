@@ -54,4 +54,14 @@ class Patient extends Model
     {
         return $this->hasOne(ObservationVital::class);
     }
+
+    public function diseaseHistory()
+    {
+        return $this->hasMany(DiseaseHistory::class);
+    }
+
+    public function drugHistory()
+    {
+        return $this->hasMany(DrugHistory::class);
+    }
 }

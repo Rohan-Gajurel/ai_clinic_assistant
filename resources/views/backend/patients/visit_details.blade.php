@@ -97,7 +97,12 @@
 <!-- Navigation Tabs -->
 <ul @class(['nav', 'nav-tabs', 'mb-3']) id="visitTabs" role="tablist">
     <li @class(['nav-item']) role="presentation">
-        <button @class(['nav-link', 'active']) id="observations-tab" data-bs-toggle="tab" data-bs-target="#observations" type="button" role="tab">
+        <button @class(['nav-link', 'active']) id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">
+            <i @class(['bi', 'bi-card-list', 'me-1'])></i>Overview
+        </button>
+    </li>
+    <li @class(['nav-item']) role="presentation">
+        <button @class(['nav-link']) id="observations-tab" data-bs-toggle="tab" data-bs-target="#observations" type="button" role="tab">
             <i @class(['bi', 'bi-binoculars', 'me-1'])></i>Observations
         </button>
     </li>
@@ -120,8 +125,160 @@
 
 <!-- Tab Contents -->
 <div @class(['tab-content']) id="visitTabsContent">
+    <!-- Overview Tab -->
+    <div @class(['tab-pane', 'fade', 'show', 'active']) id="overview" role="tabpanel" aria-labelledby="overview-tab">
+        <div class="row">
+            <!-- Left Column - Vitals & Examinations -->
+            <div class="col-md-4">
+                <!-- Vitals Card -->
+                <div class="card shadow-sm mb-4">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-4">Vitals</h5>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Blood pressure</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Pulse</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Height</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Weight</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Temperature</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Respiratory rate</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Blood oxygen saturation</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Examinations Card -->
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-4">Examinations</h5>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">Primary symptoms</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                        <div class="mb-3 d-flex justify-content-between">
+                            <span class="text-primary fw-semibold">For</span>
+                            <span class="text-muted">-</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column - Visit Details with Tabs -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="fw-bold mb-4">Visit Details</h5>
+                        
+                        <!-- Inner Tabs -->
+                        <ul class="nav nav-tabs" id="visitDetailsTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active text-primary fw-semibold" id="medical-details-tab" data-bs-toggle="tab" data-bs-target="#medical-details" type="button" role="tab">
+                                    MEDICAL DETAILS
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link text-primary fw-semibold" id="lab-results-tab" data-bs-toggle="tab" data-bs-target="#lab-results" type="button" role="tab">
+                                    LAB RESULTS
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link text-primary fw-semibold" id="medication-details-tab" data-bs-toggle="tab" data-bs-target="#medication-details" type="button" role="tab">
+                                    MEDICATION
+                                </button>
+                            </li>
+                        </ul>
+
+                        <div class="tab-content pt-3" id="visitDetailsTabContent">
+                            <!-- Medical Details Tab -->
+                            <div class="tab-pane fade show active" id="medical-details" role="tabpanel">
+                                <h5 class="fw-bold mb-3">Diagnosis</h5>
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th style="width: 8%;">S.N</th>
+                                            <th style="width: 25%;">Diagnosis</th>
+                                            <th style="width: 15%;">Order</th>
+                                            <th style="width: 15%;">Certainty</th>
+                                            <th style="width: 20%;">Remarks</th>
+                                            <th style="width: 12%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">No diagnosis records</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Lab Results Tab -->
+                            <div class="tab-pane fade" id="lab-results" role="tabpanel">
+                                <h5 class="fw-bold mb-3">Lab Results</h5>
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th style="width: 8%;">S.N</th>
+                                            <th style="width: 30%;">Test Name</th>
+                                            <th style="width: 20%;">Service Category</th>
+                                            <th style="width: 20%;">Service Type</th>
+                                            <th style="width: 12%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="5" class="text-center text-muted">No lab results</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <!-- Medication Tab -->
+                            <div class="tab-pane fade" id="medication-details" role="tabpanel">
+                                <h5 class="fw-bold mb-3">Medication</h5>
+                                <table class="table table-bordered">
+                                    <thead class="bg-light">
+                                        <tr>
+                                            <th style="width: 8%;">S.N</th>
+                                            <th style="width: 25%;">Drug Name</th>
+                                            <th style="width: 15%;">Dose</th>
+                                            <th style="width: 15%;">Frequency</th>
+                                            <th style="width: 20%;">Instructions</th>
+                                            <th style="width: 12%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td colspan="6" class="text-center text-muted">No medication records</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Observations Tab -->
-    <div @class(['tab-pane', 'fade', 'show', 'active']) id="observations" role="tabpanel" aria-labelledby="observations-tab">
+    <div @class(['tab-pane', 'fade']) id="observations" role="tabpanel" aria-labelledby="observations-tab">
         <div @class(['card', 'shadow-sm'])>
             <div @class(['card-header', 'bg-light'])>
                 <h6 @class(['mb-0'])>Examination Details</h6>
@@ -230,7 +387,10 @@
                 </h6>
             </div>
             <div @class(['card-body'])>
-                <form id="medicalHistoryForm">
+                <form id="medicalHistoryForm" method="POST" action="{{ route('visit.storeDiseaseHistory') }}">
+                    @csrf
+                    <input type="text" name="patient_id" value="{{ $patient->id }}" hidden>
+               
                     <!-- Disease History Section -->
                     <div @class(['mb-4'])>
                         <h6 @class(['fw-bold', 'mb-3', 'text-primary'])>Disease History</h6>
@@ -238,6 +398,7 @@
                             <thead @class(['bg-light'])>
                                 <tr>
                                     <th style="width: 35%;">Name <span @class(['text-danger'])>*</span></th>
+                                    <th style="width: 20%;">Duration <span @class(['text-danger'])>*</span></th>
                                     <th style="width: 35%;">For <span @class(['text-danger'])>*</span></th>
                                     <th style="width: 20%;">State <span @class(['text-danger'])>*</span></th>
                                     <th style="width: 10%;"></th>
@@ -245,20 +406,33 @@
                             </thead>
                             <tbody id="diseaseHistoryBody2">
                                 <tr>
-                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="disease_name[]" placeholder="Disease name" required></td>
-                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="disease_for[]" placeholder="Duration" required></td>
-                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="disease_state[]" placeholder="Active/Cured" required></td>
+                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="name[]" placeholder="Disease name" required></td>
+                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="duration_value[]" placeholder="Duration" required></td>
+                                    <td>
+                                        <select @class(['form-select', 'form-select-sm']) name="duration_unit[]">
+                                            <option value="">Select unit</option>
+                                            <option value="days">Days</option>
+                                            <option value="weeks">Weeks</option>
+                                            <option value="months">Months</option>
+                                            <option value="years">Years</option>
+                                        </select>
+                                    </td>
+                                     
+                                    <td><input type="checkbox" @class(['form-check-input']) name="status[]" value="1" checked></td>
                                     <td @class(['text-center'])>
                                         <button type="button" @class(['btn', 'btn-sm', 'btn-danger', 'removeRow2']) style="display:none;">
                                             <i @class(['bi', 'bi-x'])></i>
                                         </button>
                                     </td>
                                 </tr>
+                               
                             </tbody>
                         </table>
                         <button type="button" @class(['btn', 'btn-primary', 'btn-sm']) id="addDiseaseRow2">
-                            <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>Add
+                            <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>
                         </button>
+                   
+                        
                     </div>
 
                     <!-- Drug History Section -->
@@ -279,6 +453,14 @@
                                     <td><input type="text" @class(['form-control', 'form-control-sm']) name="drug_name[]" placeholder="Drug name"></td>
                                     <td><input type="text" @class(['form-control', 'form-control-sm']) name="drug_dose[]" placeholder="Dose"></td>
                                     <td>
+                                        <select @class(['form-select', 'form-select-sm']) name="dose_unit[]">
+                                            <option value="">Select unit</option>
+                                            <option value="mg">mg</option>
+                                            <option value="g">g</option>
+                                            <option value="ml">ml</option>
+                                            <option value="units">units</option>
+                                        </select>
+                                    <td>
                                         <select @class(['form-select', 'form-select-sm']) name="drug_frequency[]">
                                             <option value="">Select</option>
                                             <option value="once_daily">Once Daily</option>
@@ -288,6 +470,7 @@
                                         </select>
                                     </td>
                                     <td><input type="text" @class(['form-control', 'form-control-sm']) name="drug_for[]" placeholder="Condition"></td>
+                                    <td><input type="checkbox" @class(['form-check-input']) name="drug_status[]" value="1" checked></td>
                                     <td @class(['text-center'])>
                                         <button type="button" @class(['btn', 'btn-sm', 'btn-danger', 'removeRow2']) style="display:none;">
                                             <i @class(['bi', 'bi-x'])></i>
@@ -297,7 +480,7 @@
                             </tbody>
                         </table>
                         <button type="button" @class(['btn', 'btn-primary', 'btn-sm']) id="addDrugRow2">
-                            <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>Add
+                            <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>
                         </button>
                     </div>
 
@@ -315,39 +498,48 @@
     <!-- Lab Orders Tab -->
     <div @class(['tab-pane', 'fade']) id="laborders" role="tabpanel" aria-labelledby="laborders-tab">
         <div @class(['card', 'shadow-sm'])>
-            <div @class(['card-header', 'bg-light', 'd-flex', 'justify-content-between', 'align-items-center'])>
-                <h6 @class(['mb-0'])>Lab Orders</h6>
-                <button @class(['btn', 'btn-sm', 'btn-primary'])>
-                    <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>Add Lab Order
-                </button>
-            </div>
+            
             <div @class(['card-body'])>
-                @if(false)
-                    <table @class(['table', 'table-hover'])>
-                        <thead @class(['bg-light'])>
-                            <tr>
-                                <th>Test Name</th>
-                                <th>Date Ordered</th>
-                                <th>Status</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Blood Work</td>
-                                <td>2026-02-20</td>
-                                <td><span @class(['badge', 'bg-warning'])>Pending</span></td>
-                                <td>
-                                    <button @class(['btn', 'btn-sm', 'btn-outline-secondary'])>View</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                @else
-                    <p @class(['text-muted', 'text-center', 'py-4'])>
-                        <i @class(['bi', 'bi-inbox', 'me-2'])></i>No lab orders yet
-                    </p>
-                @endif
+                <div @class(['mb-4'])>
+                        <h6 @class(['fw-bold', 'mb-3', 'text-primary'])>Lab Orders</h6>
+                        <table @class(['table', 'table-bordered', 'table-sm'])>
+                            <thead @class(['bg-light'])>
+                                <tr>
+                                    <th style="width: 10%;">SN</th>
+                                    <th style="width: 35%;">Test Service<span @class(['text-danger'])>*</span></th>
+                                    <th style="width: 20%;">Service Code <span @class(['text-danger'])>*</span></th>
+                                    <th style="width: 20%;">Service Category <span @class(['text-danger'])>*</span></th>
+                                    <th style="width: 20%;">Service Type <span @class(['text-danger'])>*</span></th>
+                                    <th style="width: 10%;"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="labOrdersBody2">
+                                <tr>
+                                    <td>1</td>
+                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="test_service[]" placeholder="Test or service name" required></td>
+                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="service_code[]" placeholder="Service code" readonly></td>
+                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="service_for[]" placeholder="Service category" readonly></td>
+                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="service_type[]" placeholder="Service type" readonly></td>
+
+
+                                    <td @class(['text-center'])>
+                                        <button type="button" @class(['btn', 'btn-sm', 'btn-danger', 'removeRow2']) style="display:none;">
+                                            <i @class(['bi', 'bi-x'])></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                               
+                            </tbody>
+                        </table>
+                        <button type="button" @class(['btn', 'btn-primary', 'btn-sm']) id="addLaborderRow2">
+                            <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>
+                        </button>
+                        <button type="submit" @class(['btn', 'btn-success', 'btn-sm', 'ms-2'])>
+                            <i @class(['bi', 'bi-check-circle', 'me-1'])></i>Save Lab Orders
+                        </button>
+                   
+                        
+                    </div>
             </div>
         </div>
     </div>
@@ -357,9 +549,6 @@
         <div @class(['card', 'shadow-sm'])>
             <div @class(['card-header', 'bg-light', 'd-flex', 'justify-content-between', 'align-items-center'])>
                 <h6 @class(['mb-0'])>Diagnosis</h6>
-                <button @class(['btn', 'btn-sm', 'btn-primary'])>
-                    <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>Add Diagnosis
-                </button>
             </div>
             <div @class(['card-body'])>
                 <div @class(['form-group'])>
@@ -370,7 +559,14 @@
                     <label @class(['form-label'])>Secondary Diagnosis</label>
                     <textarea @class(['form-control']) rows="3" placeholder="Enter secondary diagnoses if any..."></textarea>
                 </div>
+                <div @class(['form-group', 'mt-3'])>
+                    <label @class(['form-label'])>Follow Up</label>
+                    <input type="number" @class(['form-control']) placeholder="Enter follow up after... days">
+                </div>
             </div>
+            <button @class(['btn', 'btn-primary', 'btn-sm', 'mt-3'])>
+                <i @class(['bi', 'bi-check-lg', 'me-1'])></i>Save Diagnosis
+            </button>
         </div>
     </div>
 
@@ -378,155 +574,309 @@
     <div @class(['tab-pane', 'fade']) id="medication" role="tabpanel" aria-labelledby="medication-tab">
         <div @class(['card', 'shadow-sm'])>
             <div @class(['card-header', 'bg-light', 'd-flex', 'justify-content-between', 'align-items-center'])>
-                <h6 @class(['mb-0'])>Medications</h6>
-                <button @class(['btn', 'btn-sm', 'btn-primary'])>
-                    <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>Add Medication
-                </button>
+                <h6 @class(['mb-0'])>Medication</h6>
             </div>
             <div @class(['card-body'])>
-                @if(false)
-                    <table @class(['table', 'table-hover'])>
-                        <thead @class(['bg-light'])>
-                            <tr>
-                                <th>Medicine Name</th>
-                                <th>Dosage</th>
-                                <th>Frequency</th>
-                                <th>Duration</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Paracetamol</td>
-                                <td>500mg</td>
-                                <td>2x Daily</td>
-                                <td>5 days</td>
-                                <td>
-                                    <button @class(['btn', 'btn-sm', 'btn-outline-danger'])>Delete</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                @else
-                    <p @class(['text-muted', 'text-center', 'py-4'])>
-                        <i @class(['bi', 'bi-capsule', 'me-2'])></i>No medications prescribed yet
-                    </p>
-                @endif
+                <div id="medicationContainer">
+                    <form id="medicationForm" method="POST" >
+                        @csrf
+                        <input type="text" name="patient_id" value="{{ $patient->id }}" hidden>
+                        <div class="medication-item mb-3 p-3 border rounded position-relative">
+                            <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Drug Name</label>
+                            <input type="text" class="form-control" placeholder="e.g., Aspirin">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Route</label>
+                            <select class="form-select">
+                                <option value="">Select route</option>
+                                <option value="oral">Oral</option>
+                                <option value="intramuscular">Intramuscular</option>
+                                <option value="intravenous">Intravenous</option>
+                                <option value="subcutaneous">Subcutaneous</option>
+                                <option value="topical">Topical</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Dose</label>
+                            <input type="text" class="form-control" placeholder="500">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Units</label>
+                            <select class="form-select">
+                                <option value="">Select</option>
+                                <option value="mg">mg</option>
+                                <option value="g">g</option>
+                                <option value="ml">ml</option>
+                                <option value="capsule">Capsule</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Frequency</label>
+                            <select class="form-select">
+                                <option value="">Select</option>
+                                <option value="once_daily">Once a day</option>
+                                <option value="twice_daily">Twice a day</option>
+                                <option value="thrice_daily">Thrice a day</option>
+                                <option value="as_needed">As needed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Duration</label>
+                            <input type="number" class="form-control" placeholder="7">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Unit</label>
+                            <select class="form-select">
+                                <option value="">Select</option>
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label fw-bold">Instructions</label>
+                            <textarea class="form-control" rows="1" placeholder="Take with food"></textarea>
+                        </div>
+                    </div>
+                        </div>
+                        <!-- Add more medication items dynamically -->
+                        <!-- End of dynamic medication items -->
+                    </form>
+                </div>
+                <button type="button" @class(['btn', 'btn-primary', 'btn-sm']) id="addMedBtn">
+                    <i @class(['bi', 'bi-plus-lg', 'me-1'])></i>
+                </button>
+                <button type="button" @class(['btn', 'btn-success', 'btn-sm', 'ms-2']) id="saveMedBtn">
+                    <i @class(['bi', 'bi-check-lg', 'me-1'])></i>Save Medications
+                </button>
             </div>
         </div>
     </div>
 </div>
 
 <script>
-    // Add Disease History Row
-    document.getElementById('addDiseaseRow').addEventListener('click', function() {
-        const tbody = document.getElementById('diseaseHistoryBody');
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><input type="text" @class(['form-control']) name="disease_name[]" placeholder="Disease name" required></td>
-            <td><input type="text" @class(['form-control']) name="disease_for[]" placeholder="Duration" required></td>
-            <td>
-                <select @class(['form-select']) name="disease_time[]" required>
-                    <option value="">Select</option>
-                    <option value="days">Days</option>
-                    <option value="weeks">Weeks</option>
-                    <option value="months">Months</option>
-                    <option value="years">Years</option>
-                </select>
-            </td>
-            <td><input type="text" @class(['form-control']) name="disease_state[]" placeholder="e.g., Active, Cured" required></td>
-            <td @class(['text-center'])>
-                <button type="button" @class(['btn', 'btn-sm', 'btn-danger', 'removeRow'])>
-                    <i @class(['bi', 'bi-x'])></i>
-                </button>
-            </td>
-        `;
-        tbody.appendChild(row);
-        attachRemoveHandler();
-    });
+    document.addEventListener('DOMContentLoaded', function () {
+        const addDiseaseRowButton = document.getElementById('addDiseaseRow2');
+        const diseaseHistoryBody = document.getElementById('diseaseHistoryBody2');
+        const addDrugRowButton = document.getElementById('addDrugRow2');
+        const drugHistoryBody = document.getElementById('drugHistoryBody2');
+        const addLaborderRowButton = document.getElementById('addLaborderRow2');
+        const labOrdersBody = document.getElementById('labOrdersBody2');
 
-    // Add Drug History Row
-    document.getElementById('addDrugRow').addEventListener('click', function() {
-        const tbody = document.getElementById('drugHistoryBody');
-        const row = document.createElement('tr');
-        row.innerHTML = `
-            <td><input type="text" @class(['form-control']) name="drug_name[]" placeholder="Drug name"></td>
-            <td><input type="text" @class(['form-control']) name="drug_dose[]" placeholder="Dose"></td>
-            <td>
-                <select @class(['form-select']) name="drug_dose_unit[]">
-                    <option value="">Select</option>
-                    <option value="mg">mg</option>
-                    <option value="g">g</option>
-                    <option value="mcg">mcg</option>
-                    <option value="ml">ml</option>
-                    <option value="units">units</option>
-                </select>
-            </td>
-            <td>
-                <select @class(['form-select']) name="drug_frequency[]">
-                    <option value="">Select</option>
-                    <option value="once_daily">Once Daily</option>
-                    <option value="twice_daily">Twice Daily</option>
-                    <option value="thrice_daily">Thrice Daily</option>
-                    <option value="as_needed">As Needed</option>
-                </select>
-            </td>
-            <td><input type="text" @class(['form-control']) name="drug_for[]" placeholder="Condition"></td>
-            <td>
-                <select @class(['form-select']) name="drug_duration[]">
-                    <option value="">Select</option>
-                    <option value="days">Days</option>
-                    <option value="weeks">Weeks</option>
-                    <option value="months">Months</option>
-                    <option value="years">Years</option>
-                </select>
-            </td>
-            <td @class(['text-center'])>
-                <button type="button" @class(['btn', 'btn-sm', 'btn-danger', 'removeRow'])>
-                    <i @class(['bi', 'bi-x'])></i>
-                </button>
-            </td>
-        `;
-        tbody.appendChild(row);
-        attachRemoveHandler();
-    });
+        // Medication buttons
+        const addMedBtn = document.getElementById('addMedBtn');
+        const saveMedBtn = document.getElementById('saveMedBtn');
+        const medicationContainer = document.getElementById('medicationContainer');
 
-    // Remove Row Handler
-    function attachRemoveHandler() {
-        document.querySelectorAll('.removeRow').forEach(btn => {
-            btn.addEventListener('click', function(e) {
-                e.preventDefault();
-                this.closest('tr').remove();
+        if (addMedBtn) {
+            addMedBtn.addEventListener('click', function() {
+                const newMed = document.createElement('div');
+                newMed.className = 'medication-item mb-3 p-3 border rounded position-relative';
+                newMed.innerHTML = `
+                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 me-2 mt-2" style="cursor: pointer;">
+                        <i class="bi bi-x"></i>
+                    </button>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Drug Name</label>
+                            <input type="text" class="form-control" placeholder="e.g., Aspirin">
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Route</label>
+                            <select class="form-select">
+                                <option value="">Select route</option>
+                                <option value="oral">Oral</option>
+                                <option value="intramuscular">Intramuscular</option>
+                                <option value="intravenous">Intravenous</option>
+                                <option value="subcutaneous">Subcutaneous</option>
+                                <option value="topical">Topical</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Dose</label>
+                            <input type="text" class="form-control" placeholder="500">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Units</label>
+                            <select class="form-select">
+                                <option value="">Select</option>
+                                <option value="mg">mg</option>
+                                <option value="g">g</option>
+                                <option value="ml">ml</option>
+                                <option value="capsule">Capsule</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3 mb-3">
+                            <label class="form-label fw-bold">Frequency</label>
+                            <select class="form-select">
+                                <option value="">Select</option>
+                                <option value="once_daily">Once a day</option>
+                                <option value="twice_daily">Twice a day</option>
+                                <option value="thrice_daily">Thrice a day</option>
+                                <option value="as_needed">As needed</option>
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Duration</label>
+                            <input type="number" class="form-control" placeholder="7">
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label class="form-label fw-bold">Unit</label>
+                            <select class="form-select">
+                                <option value="">Select</option>
+                                <option value="days">Days</option>
+                                <option value="weeks">Weeks</option>
+                                <option value="months">Months</option>
+                            </select>
+                        </div>
+                        <div class="col-md-5 mb-3">
+                            <label class="form-label fw-bold">Instructions</label>
+                            <textarea class="form-control" rows="1" placeholder="Take with food"></textarea>
+                        </div>
+                    </div>
+                `;
+                medicationContainer.appendChild(newMed);
+                
+                newMed.querySelector('button').addEventListener('click', function() {
+                    newMed.remove();
+                });
+            });
+        }
+
+        if (saveMedBtn) {
+            saveMedBtn.addEventListener('click', function() {
+                const medications = [];
+                document.querySelectorAll('.medication-item').forEach(item => {
+                    const inputs = item.querySelectorAll('input, select, textarea');
+                    if (inputs[0]?.value) {
+                        medications.push({
+                            drug_name: inputs[0]?.value,
+                            route: inputs[1]?.value,
+                            dose: inputs[2]?.value,
+                            dose_units: inputs[3]?.value,
+                            frequency: inputs[4]?.value,
+                            duration: inputs[5]?.value,
+                            duration_unit: inputs[6]?.value,
+                            instructions: inputs[7]?.value
+                        });
+                    }
+                });
+                
+                localStorage.setItem('medications', JSON.stringify(medications));
+                alert('✓ Medications saved successfully!');
+            });
+        }
+
+        // Add Disease Row
+        addDiseaseRowButton.addEventListener('click', function () {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" class="form-control form-control-sm" name="name[]" placeholder="Disease name" required></td>
+                <td><input type="text" class="form-control form-control-sm" name="duration_value[]" placeholder="Duration" required></td>
+                <td>
+                    <select class="form-select form-select-sm" name="duration_unit[]">
+                        <option value="">Select unit</option>
+                        <option value="days">Days</option>
+                        <option value="weeks">Weeks</option>
+                        <option value="months">Months</option>
+                        <option value="years">Years</option>
+                    </select>
+                </td>
+                <td><input type="checkbox" class="form-check-input" name="status[]" value="1" checked></td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-danger removeRow2">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </td>
+            `;
+            diseaseHistoryBody.appendChild(newRow);
+
+            // Add event listener to the remove button
+            const removeButton = newRow.querySelector('.removeRow2');
+            removeButton.addEventListener('click', function () {
+                newRow.remove();
             });
         });
 
-        // Show remove buttons if more than one row
-        const diseaseRows = document.querySelectorAll('#diseaseHistoryBody tr');
-        diseaseRows.forEach(row => {
-            const removeBtn = row.querySelector('.removeRow');
-            if (removeBtn) {
-                removeBtn.style.display = diseaseRows.length > 1 ? 'inline-block' : 'none';
+        // Add Drug Row
+        addDrugRowButton.addEventListener('click', function () {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td><input type="text" class="form-control form-control-sm" name="drug_name[]" placeholder="Drug name"></td>
+                <td><input type="text" class="form-control form-control-sm" name="drug_dose[]" placeholder="Dose"></td>
+                <td>
+                    <select class="form-select form-select-sm" name="dose_unit[]">
+                        <option value="">Select unit</option>
+                        <option value="mg">mg</option>
+                        <option value="g">g</option>
+                        <option value="ml">ml</option>
+                        <option value="units">units</option>
+                    </select>
+                </td>
+                <td>
+                    <select class="form-select form-select-sm" name="drug_frequency[]">
+                        <option value="">Select</option>
+                        <option value="once_daily">Once Daily</option>
+                        <option value="twice_daily">Twice Daily</option>
+                        <option value="thrice_daily">Thrice Daily</option>
+                        <option value="as_needed">As Needed</option>
+                    </select>
+                </td>
+                <td><input type="text" class="form-control form-control-sm" name="drug_for[]" placeholder="Condition"></td>
+                <td><input type="checkbox" class="form-check-input" name="drug_status[]" value="1" checked></td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-danger removeRow2">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </td>
+            `;
+            drugHistoryBody.appendChild(newRow);
+
+            // Add event listener to the remove button
+            const removeButton = newRow.querySelector('.removeRow2');
+            removeButton.addEventListener('click', function () {
+                newRow.remove();
+            });
+        });
+
+        labOrdersBody.addEventListener('click', function (e) {
+            if (e.target.classList.contains('removeRow2') || e.target.closest('.removeRow2')) {
+                const row = e.target.closest('tr');
+                row.remove();
             }
         });
 
-        const drugRows = document.querySelectorAll('#drugHistoryBody tr');
-        drugRows.forEach(row => {
-            const removeBtn = row.querySelector('.removeBtn');
-            if (removeBtn) {
-                removeBtn.style.display = drugRows.length > 1 ? 'inline-block' : 'none';
-            }
-        });
-    }
+         // Add Lab Order Row
+         addLaborderRowButton.addEventListener('click', function () {
+            const newRow = document.createElement('tr');
+            const rowCount = labOrdersBody.querySelectorAll('tr').length + 1;
+            newRow.innerHTML = `
+                <td>${rowCount}</td>
+                <td><input type="text" class="form-control form-control-sm" name="test_service[]" placeholder="Test or service name" required></td>
+                <td><input type="text" class="form-control form-control-sm" name="service_code[]" placeholder="Service code" readonly></td>
+                <td><input type="text" class="form-control form-control-sm" name="service_for[]" placeholder="Service category" readonly></td>
+                <td><input type="text" class="form-control form-control-sm" name="service_type[]" placeholder="Service type" readonly></td>
+                <td class="text-center">
+                    <button type="button" class="btn btn-sm btn-danger removeRow2">
+                        <i class="bi bi-x"></i>
+                    </button>
+                </td>
+            `;
+            labOrdersBody.appendChild(newRow);
 
-    // Form submit handler
-    document.getElementById('historyForm').addEventListener('submit', function(e) {
-        e.preventDefault();
-        // Add your form submission logic here
-        alert('History saved successfully!');
+            // Add event listener to the remove button
+            const removeButton = newRow.querySelector('.removeRow2');
+            removeButton.addEventListener('click', function () {
+                newRow.remove();
+            });
+        });
     });
-
-    // Initialize remove handlers on page load
-    attachRemoveHandler();
 </script>
 
 @endsection
