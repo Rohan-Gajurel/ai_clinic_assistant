@@ -73,7 +73,7 @@
                 
                 <!-- Action Buttons -->
                 <div @class(['mt-3'])>
-                    <button @class(['btn', 'btn-info', 'btn-sm', 'me-2']) title="View visit history">
+                    <button @class(['btn', 'btn-info', 'btn-sm', 'me-2']) title="View visit history" id='visitHistoryBtn'>
                         <i @class(['bi', 'bi-clock-history', 'me-1'])></i>Visit History
                     </button>
                     <button @class(['btn', 'btn-success', 'btn-sm', 'me-2']) title="View patient card">
@@ -82,12 +82,15 @@
                     <button @class(['btn', 'btn-primary', 'btn-sm', 'me-2']) title="Refer to another doctor">
                         <i @class(['bi', 'bi-arrow-repeat', 'me-1'])></i>Refer
                     </button>
-                    <button @class(['btn', 'btn-warning', 'btn-sm', 'me-2']) title="Add new appointment">
-                        <i @class(['bi', 'bi-calendar-check', 'me-1'])></i>New Appointment
-                    </button>
+                    @if(optional($currentAppointment)->status != 'completed')
                     <button @class(['btn', 'btn-danger', 'btn-sm']) title="End current visit">
                         <i @class(['bi', 'bi-x-circle', 'me-1'])></i>End Visit
                     </button>
+                    @else
+                    <a href="{{ route('appointments.create', $patient->id) }}" @class(['btn', 'btn-warning', 'btn-sm', 'me-2']) title="Book new appointment">
+                        <i @class(['bi', 'bi-calendar-plus', 'me-1'])></i>New Appointment
+                    </a>
+                    @endif
                 </div>
             </div>
         </div>
@@ -96,11 +99,13 @@
 
 <!-- Navigation Tabs -->
 <ul @class(['nav', 'nav-tabs', 'mb-3']) id="visitTabs" role="tablist">
+   
     <li @class(['nav-item']) role="presentation">
         <button @class(['nav-link', 'active']) id="overview-tab" data-bs-toggle="tab" data-bs-target="#overview" type="button" role="tab">
             <i @class(['bi', 'bi-card-list', 'me-1'])></i>Overview
         </button>
     </li>
+     @if(optional($currentAppointment)->status != 'completed')
     <li @class(['nav-item']) role="presentation">
         <button @class(['nav-link']) id="observations-tab" data-bs-toggle="tab" data-bs-target="#observations" type="button" role="tab">
             <i @class(['bi', 'bi-binoculars', 'me-1'])></i>Observations
@@ -121,6 +126,7 @@
             <i @class(['bi', 'bi-capsule', 'me-1'])></i>Medication
         </button>
     </li>
+    @endif
 </ul>
 
 <!-- Tab Contents -->
@@ -185,7 +191,25 @@
             <div class="col-md-8">
                 <div class="card shadow-sm">
                     <div class="card-body">
-                        <h5 class="fw-bold mb-4">Visit Details</h5>
+                        <h5 class="fw-bold mb-2">Visit Details</h5>
+                        
+                        @if($currentAppointment)
+                        <div class="alert {{ $currentAppointment->status == 'completed' ? 'alert-secondary' : 'alert-info' }} py-2 mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <div>
+                                    <i class="bi bi-calendar-event me-1"></i>
+                                    <strong>{{ \Carbon\Carbon::parse($currentAppointment->appointment_date)->format('d M, Y') }}</strong>
+                                    at <strong>{{ \Carbon\Carbon::parse($currentAppointment->start_time)->format('h:i A') }}</strong>
+                                    @if($currentAppointment->doctor)
+                                        | Dr. {{ $currentAppointment->doctor->user->name ?? 'N/A' }}
+                                    @endif
+                                </div>
+                                <span class="badge {{ $currentAppointment->status == 'completed' ? 'bg-secondary' : 'bg-success' }}">
+                                    {{ ucfirst($currentAppointment->status) }}
+                                </span>
+                            </div>
+                        </div>
+                        @endif
                         
                         <!-- Inner Tabs -->
                         <ul class="nav nav-tabs" id="visitDetailsTabs" role="tablist">
@@ -876,6 +900,86 @@
                 newRow.remove();
             });
         });
+    
+        
+    });
+</script>
+
+<!-- Visit History Modal -->
+<div class="modal fade" id="visitHistoryModal" tabindex="-1" aria-labelledby="visitHistoryModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title" id="visitHistoryModalLabel">
+                    <i class="bi bi-clock-history me-2"></i>Visit History
+                </h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <p class="text-muted mb-3">Completed visits for <strong>{{ $patient->full_name }}</strong></p>
+                <table class="table table-bordered table-hover">
+                    <thead class="bg-light">
+                        <tr>
+                            <th style="width: 8%;">S.N</th>
+                            <th style="width: 20%;">Date</th>
+                            <th style="width: 15%;">Time</th>
+                            <th style="width: 25%;">Doctor</th>
+                            <th style="width: 22%;">Reason</th>
+                            <th style="width: 10%;">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @php
+                            $completedAppointments = $patient->appointments->where('status', 'completed');
+                        @endphp
+                        @forelse($completedAppointments as $index => $appointment)
+                            <tr class="{{ optional($currentAppointment)->id == $appointment->id ? 'table-primary' : '' }}">
+                                <td>{{ $index + 1 }}</td>
+                                <td>{{ \Carbon\Carbon::parse($appointment->appointment_date)->format('d M, Y') }}</td>
+                                <td>{{ \Carbon\Carbon::parse($appointment->start_time)->format('h:i A') }}</td>
+                                <td>{{ $appointment->doctor->user->name ?? 'N/A' }}</td>
+                                <td>{{ $appointment->reason ?? '-' }}</td>
+                                <td>
+                                    @if(optional($currentAppointment)->id == $appointment->id)
+                                        <span class="badge bg-primary">Viewing</span>
+                                    @else
+                                        <a href="{{ route('patients.visitDetails', $patient->id) }}?appointment_id={{ $appointment->id }}" class="btn btn-sm btn-outline-primary" title="View Details">
+                                            <i class="bi bi-eye"></i>
+                                        </a>
+                                    @endif
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center text-muted py-4">
+                                    <i class="bi bi-calendar-x fs-3 d-block mb-2"></i>
+                                    No completed visits found
+                                </td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="modal-footer">
+                @if(optional($currentAppointment)->status == 'completed')
+                    <a href="{{ route('patients.visitDetails', $patient->id) }}" class="btn btn-primary">
+                        <i class="bi bi-arrow-left me-1"></i>Go to Current Visit
+                    </a>
+                @endif
+                <a href="{{ route('appointments.create', $patient->id) }}" class="btn btn-success">
+                    <i class="bi bi-plus-lg me-1"></i>New Appointment
+                </a>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Visit History Button Click Handler
+    document.getElementById('visitHistoryBtn').addEventListener('click', function() {
+        var visitHistoryModal = new bootstrap.Modal(document.getElementById('visitHistoryModal'));
+        visitHistoryModal.show();
     });
 </script>
 

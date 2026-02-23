@@ -24,7 +24,7 @@ class DashboardController extends Controller
 
         $events = $appointments->map(function ($appointment) {
             return [
-                'title' => "Appointment with Dr. {$appointment->doctor->user->name} for {$appointment->patient->user->name}",
+                'title' => "Appointment with Dr. {$appointment->doctor->user->name} for {$appointment->patient->full_name}",
                 'start' => $appointment->appointment_date . 'T' . $appointment->start_time,
                 'end' => $appointment->appointment_date . 'T' . $appointment->end_time,
                 'color' => $this->getStatusColor($appointment->status),

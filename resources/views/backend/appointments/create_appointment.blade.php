@@ -38,6 +38,11 @@
                         </ul>
                     </div>
                 @endif
+                @if(session('info'))
+                    <div class="alert alert-info">
+                        <i class="bi bi-info-circle me-2"></i>{{ session('info') }}
+                    </div>
+                @endif
 
                 <form action="{{ route('appointments.store') }}" method="POST">
                     @csrf

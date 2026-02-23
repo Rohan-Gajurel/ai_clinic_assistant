@@ -92,7 +92,7 @@
                         </td>
                         <td class="text-center">
                             @can('patient_manage')
-                            <a href="{{ route('patients.visitDetails', $patient->id) }}" class="action-btn info me-1" title="View Visit Details">
+                            <a href="{{ route('patients.visitDetails', $patient->id) }}" class="btn btn-sm btn-outline-info me-1"title="View Visit Details">
                                 <i class="bi bi-eye"></i>
                             </a>
                             <a href="{{ route('patients.edit', $patient->id) }}" class="action-btn edit me-1" title="Edit">

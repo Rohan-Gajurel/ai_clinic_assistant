@@ -49,20 +49,7 @@
 
 
                 <!-- Departments -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('schedules.index') ? 'active' : '' }}" href="{{ route('schedules.index') }}">
-                        <i class="bi bi-building"></i>
-                        Schedules
-                    </a>
-                </li>
-
-                <!-- Follow-ups -->
-                <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('followups.index') ? 'active' : '' }}" href="{{ route('followups.index') }}">
-                        <i class="bi bi-arrow-repeat"></i>
-                        Follow-ups
-                    </a>
-                </li>
+               
 
                 <!-- Feedbacks -->
                 <li class="nav-item">
@@ -131,6 +118,12 @@
                                     Departments
                                 </a>
                             </li>
+                             <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('schedules.index') ? 'active' : '' }}" href="{{ route('schedules.index') }}">
+                        <i class="bi bi-building"></i>
+                        Schedules
+                    </a>
+                </li>
                         </ul>
                     </div>
                 </li>

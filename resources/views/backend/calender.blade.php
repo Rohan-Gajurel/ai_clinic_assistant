@@ -52,6 +52,33 @@
 
                     <hr>
 
+                </div>
+                    <div class="row px-3 mb-3">
+                        <div class="col-12">
+                            <div class="d-flex flex-wrap gap-3 align-items-center">
+                                <span class="d-flex align-items-center">
+                                    <span class="rounded-circle me-1" style="width: 12px; height: 12px; background-color: #28a745; display: inline-block;"></span>
+                                    <small>Approved</small>
+                                </span>
+                                <span class="d-flex align-items-center">
+                                    <span class="rounded-circle me-1" style="width: 12px; height: 12px; background-color: #ffc107; display: inline-block;"></span>
+                                    <small>Pending</small>
+                                </span>
+                                <span class="d-flex align-items-center">
+                                    <span class="rounded-circle me-1" style="width: 12px; height: 12px; background-color: #dc3545; display: inline-block;"></span>
+                                    <small>Cancelled</small>
+                                </span>
+                                <span class="d-flex align-items-center">
+                                    <span class="rounded-circle me-1" style="width: 12px; height: 12px; background-color: #007bff; display: inline-block;"></span>
+                                    <small>Completed</small>
+                                </span>
+                                <span class="d-flex align-items-center">
+                                    <span class="rounded-circle me-1" style="width: 12px; height: 12px; background-color: #6c757d; display: inline-block;"></span>
+                                    <small>Other</small>
+                                </span>
+                            </div>
+                        </div>
+                </div>
                     <div id="calendar-placeholder" class="text-center p-5">
                         <div id='calendar'></div>
                     </div>

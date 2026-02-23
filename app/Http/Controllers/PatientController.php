@@ -63,11 +63,7 @@ class PatientController extends Controller
         return view('backend.patients.edit_patient', compact('patient'));
     }
 
-    public function visitDetails($id)
-    {
-        $patient = Patient::with('user')->findOrFail($id);
-        return view('backend.patients.visit_details', compact('patient'));
-    }
+    
 
     public function update(Request $request, $id)
     {
@@ -113,6 +109,39 @@ class PatientController extends Controller
         $patient = Patient::findOrFail($id);
         $patient->delete();
         return redirect()->route('patients.index')->with('success', 'Patient deleted successfully.');
-    }      
+    }     
+    
+    public function visitDetails(Request $request, $id)
+    {
+        $patient = Patient::findOrFail($id);
+        if($patient->appointments->isEmpty()){
+            return redirect()->route('appointments.create', $patient->id)->with('info', 'Visit details are only available for patients with upcoming or ongoing appointments.');
+        }
+
+        // Get specific appointment if appointment_id is provided
+        $appointmentId = $request->query('appointment_id');
+        
+        if ($appointmentId) {
+            // Show specific appointment (from visit history)
+            $currentAppointment = $patient->appointments()->with('doctor.user')->find($appointmentId);
+        } else {
+            // Show latest non-completed appointment or the most recent one
+            $currentAppointment = $patient->appointments()
+                ->with('doctor.user')
+                ->where('status', '!=', 'completed')
+                ->orderBy('appointment_date', 'desc')
+                ->first();
+            
+            // If no active appointment, get the latest one
+            if (!$currentAppointment) {
+                $currentAppointment = $patient->appointments()
+                    ->with('doctor.user')
+                    ->orderBy('appointment_date', 'desc')
+                    ->first();
+            }
+        }
+
+        return view('backend.patients.visit_details', compact('patient', 'currentAppointment'));
+    }
 
 }
