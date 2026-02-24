@@ -98,16 +98,17 @@
                         </ul>
                     </div>
                 </li>
+
                 <li class="nav-item">
-                    <a class="nav-link d-flex align-items-center {{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#doctorSubmenu" role="button" aria-expanded="{{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'true' : 'false' }}" aria-controls="doctorSubmenu">
+                    <a class="nav-link d-flex align-items-center {{ request()->routeIs('doctors.*') || request()->routeIs('departments.*') || request()->routeIs('schedules.*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#doctorSubmenu" role="button" aria-expanded="{{ request()->routeIs('doctors.*') || request()->routeIs('departments.*') || request()->routeIs('schedules.*') ? 'true' : 'false' }}" aria-controls="doctorSubmenu">
                         <i class="bi bi-people"></i>
                         <span class="flex-grow-1">Doctor Management</span>
                         <i class="bi bi-chevron-down ms-auto" style="font-size: 0.75rem;"></i>
                     </a>
-                    <div class="collapse submenu {{ request()->routeIs('users.*') || request()->routeIs('roles.*') || request()->routeIs('permissions.*') ? 'show' : '' }}" id="doctorSubmenu">
+                    <div class="collapse submenu {{ request()->routeIs('doctors.*') || request()->routeIs('departments.*') || request()->routeIs('schedules.*') ? 'show' : '' }}" id="doctorSubmenu">
                         <ul class="nav flex-column">
                             <li class="nav-item">
-                                <a class="nav-link {{ request()->routeIs('doctors.doctors') ? 'active' : '' }}" href="{{ route('doctors.doctors') }}">
+                                <a class="nav-link {{ request()->routeIs('doctors.*') ? 'active' : '' }}" href="{{ route('doctors.doctors') }}">
                                     <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
                                     All Doctors
                                 </a>
@@ -119,14 +120,58 @@
                                 </a>
                             </li>
                              <li class="nav-item">
-                    <a class="nav-link {{ request()->routeIs('schedules.index') ? 'active' : '' }}" href="{{ route('schedules.index') }}">
-                        <i class="bi bi-building"></i>
+                    <a class="nav-link {{ request()->routeIs('schedules.*') ? 'active' : '' }}" href="{{ route('schedules.index') }}">
+                        <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
                         Schedules
                     </a>
                 </li>
                         </ul>
                     </div>
                 </li>
+
+                <li class="nav-item">
+                    <a class="nav-link d-flex align-items-center {{ request()->routeIs('lab-category.*') || request()->routeIs('lab-sample.*') || request()->routeIs('lab-method.*') || request()->routeIs('lab-test.*') || request()->routeIs('lab-group.*') ? 'active' : '' }}" data-bs-toggle="collapse" href="#labSubmenu" role="button" aria-expanded="{{ request()->routeIs('lab-category.*') || request()->routeIs('lab-sample.*') || request()->routeIs('lab-method.*') || request()->routeIs('lab-test.*') || request()->routeIs('lab-group.*') ? 'true' : 'false' }}" aria-controls="labSubmenu">
+                        <i class="bi bi-flask"></i>
+                        <span class="flex-grow-1">Lab Management</span>
+                        <i class="bi bi-chevron-down ms-auto" style="font-size: 0.75rem;"></i>
+                    </a>
+                    <div class="collapse submenu {{ request()->routeIs('lab-category.*') || request()->routeIs('lab-sample.*') || request()->routeIs('lab-method.*') || request()->routeIs('lab-test.*') || request()->routeIs('lab-group.*') ? 'show' : '' }}" id="labSubmenu">
+                        <ul class="nav flex-column">
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('lab-category.*') ? 'active' : '' }}" href="{{ route('lab-category.index') }}">
+                                    <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
+                                    Categories
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('lab-sample.*') ? 'active' : '' }}" href="{{ route('lab-sample.index') }}">
+                                    <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
+                                    Samples
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('lab-method.*') ? 'active' : '' }}" href="{{ route('lab-method.index') }}">
+                                    <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
+                                    Lab Methods
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('lab-test.*') ? 'active' : '' }}" href="{{ route('lab-test.index') }}">
+                                    <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
+                                    Lab Tests
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link {{ request()->routeIs('lab-group.*') ? 'active' : '' }}" href="{{ route('lab-group.index') }}">
+                                    <i class="bi bi-circle-fill" style="font-size: 0.4rem;"></i>
+                                    Lab Groups
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                </li>
+
+
 
                 <!-- Settings -->
                 <li class="nav-item">

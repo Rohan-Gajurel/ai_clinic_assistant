@@ -6,6 +6,11 @@ use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
 use App\Http\Controllers\FollowupController;
 use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\LabCategoryController;
+use App\Http\Controllers\LabGroupController;
+use App\Http\Controllers\LabMethodController;
+use App\Http\Controllers\LabSampleController;
+use App\Http\Controllers\LabTestController;
 use App\Http\Controllers\PatientController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\PermissionController;
@@ -151,6 +156,57 @@ Route::prefix('visit')->controller(VisitController::class)->group(function(){
     Route::post('/store-examination', 'storeExamination')->name('visit.storeExamination');
     Route::post('/store-vitals', 'upsertVitals')->name('visit.storeVitals');
     Route::post('/store-disease-history', 'storeDiseaseHistory')->name('visit.storeDiseaseHistory');
+});
+
+
+// Lab Routes
+Route::prefix('lab-category')->controller(LabCategoryController::class)->group(function(){
+    Route::get('/categories', 'index')->name('lab-category.index');
+    Route::get('/categories/create', 'create')->name('lab-category.create');
+    Route::post('/categories', 'store')->name('lab-category.store');
+    Route::get('/categories/{id}/edit', 'edit')->name('lab-category.edit');
+    Route::put('/categories/{id}', 'update')->name('lab-category.update');
+    Route::delete('/categories/{id}', 'destroy')->name('lab-category.destroy');
+});
+
+Route::prefix('lab-samples')->controller(LabSampleController::class)->group(function(){
+    Route::get('/', 'index')->name('lab-sample.index');
+    Route::get('/create', 'create')->name('lab-sample.create');
+    Route::post('/', 'store')->name('lab-sample.store');
+    Route::get('/{id}', 'show')->name('lab-sample.show');
+    Route::get('/{id}/edit', 'edit')->name('lab-sample.edit');
+    Route::put('/{id}', 'update')->name('lab-sample.update');
+    Route::delete('/{id}', 'destroy')->name('lab-sample.destroy');
+});
+
+Route::prefix('lab-methods')->controller(LabMethodController::class)->group(function(){
+    Route::get('/', 'index')->name('lab-method.index');
+    Route::get('/create', 'create')->name('lab-method.create');
+    Route::post('/', 'store')->name('lab-method.store');
+    Route::get('/{id}', 'show')->name('lab-method.show');
+    Route::get('/{id}/edit', 'edit')->name('lab-method.edit');
+    Route::put('/{id}', 'update')->name('lab-method.update');
+    Route::delete('/{id}', 'destroy')->name('lab-method.destroy');
+});
+
+Route::prefix('lab-tests')->controller(LabTestController::class)->group(function(){
+    Route::get('/', 'index')->name('lab-test.index');
+    Route::get('/create', 'create')->name('lab-test.create');
+    Route::post('/', 'store')->name('lab-test.store');
+    Route::get('/{id}', 'show')->name('lab-test.show');
+    Route::get('/{id}/edit', 'edit')->name('lab-test.edit');
+    Route::put('/{id}', 'update')->name('lab-test.update');
+    Route::delete('/{id}', 'destroy')->name('lab-test.destroy');
+});
+
+Route::prefix('lab-group')->controller(LabGroupController::class)->group(function(){
+    Route::get('/', 'index')->name('lab-group.index');
+    Route::get('/create', 'create')->name('lab-group.create');
+    Route::post('/', 'store')->name('lab-group.store');
+    Route::get('/{id}', 'show')->name('lab-group.show');
+    Route::get('/{id}/edit', 'edit')->name('lab-group.edit');
+    Route::put('/{id}', 'update')->name('lab-group.update');
+    Route::delete('/{id}', 'destroy')->name('lab-group.destroy');
 });
 
 require __DIR__.'/settings.php';
