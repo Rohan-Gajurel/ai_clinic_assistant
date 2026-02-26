@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AppointmentController;
+use App\Http\Controllers\BillController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\DoctorController;
@@ -207,6 +208,18 @@ Route::prefix('lab-group')->controller(LabGroupController::class)->group(functio
     Route::get('/{id}/edit', 'edit')->name('lab-group.edit');
     Route::put('/{id}', 'update')->name('lab-group.update');
     Route::delete('/{id}', 'destroy')->name('lab-group.destroy');
+});
+
+Route::prefix('bills')->controller(BillController::class)->group(function(){
+    Route::get('/', 'index')->name('bills.index');
+    Route::get('/create', 'create')->name('bills.create');
+    Route::get('/patient-search', 'patientSearch')->name('bills.patientSearch');
+    Route::get('/service-search', 'serviceSearch')->name('bills.serviceSearch');
+    Route::post('/', 'store')->name('bills.store');
+    Route::get('/{id}', 'show')->name('bills.show');
+    Route::get('/{id}/edit', 'edit')->name('bills.edit');
+    Route::put('/{id}', 'update')->name('bills.update');
+    Route::delete('/{id}', 'destroy')->name('bills.destroy');
 });
 
 require __DIR__.'/settings.php';

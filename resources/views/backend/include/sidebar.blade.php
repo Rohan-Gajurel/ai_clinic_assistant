@@ -66,6 +66,14 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link {{ request()->routeIs('bills.index') ? 'active' : '' }}" href="{{ route('bills.index') }}">
+                        <i class="bi bi-bell"></i>
+                        Bills
+                    </a>
+                </li>
+
+
                 <li class="menu-header">Administration</li>
 
                 <!-- Users Dropdown -->

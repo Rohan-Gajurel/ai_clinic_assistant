@@ -530,29 +530,27 @@
                             <thead @class(['bg-light'])>
                                 <tr>
                                     <th style="width: 10%;">SN</th>
-                                    <th style="width: 35%;">Test Service<span @class(['text-danger'])>*</span></th>
-                                    <th style="width: 20%;">Service Code <span @class(['text-danger'])>*</span></th>
-                                    <th style="width: 20%;">Service Category <span @class(['text-danger'])>*</span></th>
-                                    <th style="width: 20%;">Service Type <span @class(['text-danger'])>*</span></th>
+                                    <th style="width: 50%;">Test Service<span @class(['text-danger'])>*</span></th>
+                                    <th style="width: 30%;">Service Code <span @class(['text-danger'])>*</span></th>
                                     <th style="width: 10%;"></th>
                                 </tr>
                             </thead>
-                            <tbody id="labOrdersBody2">
-                                <tr>
+                            <tbody id="itemsBody">
+                                <tr class="item-row">
                                     <td>1</td>
-                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="test_service[]" placeholder="Test or service name" required></td>
-                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="service_code[]" placeholder="Service code" readonly></td>
-                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="service_for[]" placeholder="Service category" readonly></td>
-                                    <td><input type="text" @class(['form-control', 'form-control-sm']) name="service_type[]" placeholder="Service type" readonly></td>
-
-
-                                    <td @class(['text-center'])>
-                                        <button type="button" @class(['btn', 'btn-sm', 'btn-danger', 'removeRow2']) style="display:none;">
-                                            <i @class(['bi', 'bi-x'])></i>
+                                    <td class="position-relative">
+                                        <input type="text" class="form-control form-control-sm service-search" placeholder="Type to search..." autocomplete="off">
+                                        <input type="hidden" name="lab_orders[0][service_id]" class="service-id">
+                                        <input type="hidden" name="lab_orders[0][service_name]" class="service-name">
+                                        <div class="service-results position-absolute w-100 bg-white border rounded shadow-sm" style="display: none; z-index: 1000; max-height: 200px; overflow-y: auto;"></div>
+                                    </td>
+                                    <td><input type="text" class="form-control form-control-sm" name="lab_orders[0][service_code]" placeholder="Service code" readonly></td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-sm btn-danger removeRow2" style="display:none;">
+                                            <i class="bi bi-x"></i>
                                         </button>
                                     </td>
                                 </tr>
-                               
                             </tbody>
                         </table>
                         <button type="button" @class(['btn', 'btn-primary', 'btn-sm']) id="addLaborderRow2">
@@ -682,228 +680,161 @@
     </div>
 </div>
 
+@push('script')
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-        const addDiseaseRowButton = document.getElementById('addDiseaseRow2');
-        const diseaseHistoryBody = document.getElementById('diseaseHistoryBody2');
-        const addDrugRowButton = document.getElementById('addDrugRow2');
-        const drugHistoryBody = document.getElementById('drugHistoryBody2');
-        const addLaborderRowButton = document.getElementById('addLaborderRow2');
-        const labOrdersBody = document.getElementById('labOrdersBody2');
+    document.addEventListener('DOMContentLoaded', function() {
+        const itemsBody = document.getElementById('itemsBody');
+        let serviceSearchTimeout;
 
-        // Medication buttons
-        const addMedBtn = document.getElementById('addMedBtn');
-        const saveMedBtn = document.getElementById('saveMedBtn');
-        const medicationContainer = document.getElementById('medicationContainer');
-
-        if (addMedBtn) {
-            addMedBtn.addEventListener('click', function() {
-                const newMed = document.createElement('div');
-                newMed.className = 'medication-item mb-3 p-3 border rounded position-relative';
-                newMed.innerHTML = `
-                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 me-2 mt-2" style="cursor: pointer;">
-                        <i class="bi bi-x"></i>
-                    </button>
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label class="form-label fw-bold">Drug Name</label>
-                            <input type="text" class="form-control" placeholder="e.g., Aspirin">
-                        </div>
-                        <div class="col-md-3 mb-3">
-                            <label class="form-label fw-bold">Route</label>
-                            <select class="form-select">
-                                <option value="">Select route</option>
-                                <option value="oral">Oral</option>
-                                <option value="intramuscular">Intramuscular</option>
-                                <option value="intravenous">Intravenous</option>
-                                <option value="subcutaneous">Subcutaneous</option>
-                                <option value="topical">Topical</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-bold">Dose</label>
-                            <input type="text" class="form-control" placeholder="500">
-                        </div>
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-bold">Units</label>
-                            <select class="form-select">
-                                <option value="">Select</option>
-                                <option value="mg">mg</option>
-                                <option value="g">g</option>
-                                <option value="ml">ml</option>
-                                <option value="capsule">Capsule</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-3 mb-3">
-                            <label class="form-label fw-bold">Frequency</label>
-                            <select class="form-select">
-                                <option value="">Select</option>
-                                <option value="once_daily">Once a day</option>
-                                <option value="twice_daily">Twice a day</option>
-                                <option value="thrice_daily">Thrice a day</option>
-                                <option value="as_needed">As needed</option>
-                            </select>
-                        </div>
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-bold">Duration</label>
-                            <input type="number" class="form-control" placeholder="7">
-                        </div>
-                        <div class="col-md-2 mb-3">
-                            <label class="form-label fw-bold">Unit</label>
-                            <select class="form-select">
-                                <option value="">Select</option>
-                                <option value="days">Days</option>
-                                <option value="weeks">Weeks</option>
-                                <option value="months">Months</option>
-                            </select>
-                        </div>
-                        <div class="col-md-5 mb-3">
-                            <label class="form-label fw-bold">Instructions</label>
-                            <textarea class="form-control" rows="1" placeholder="Take with food"></textarea>
-                        </div>
-                    </div>
+        // Add Row Functionality
+        const addRowBtn = document.getElementById('addLaborderRow2');
+        if (addRowBtn && itemsBody) {
+            addRowBtn.addEventListener('click', function() {
+                const rowCount = itemsBody.querySelectorAll('.item-row').length;
+                const newRow = document.createElement('tr');
+                newRow.className = 'item-row';
+                newRow.innerHTML = `
+                    <td>${rowCount + 1}</td>
+                    <td class="position-relative">
+                        <input type="text" class="form-control form-control-sm service-search" placeholder="Type to search..." autocomplete="off">
+                        <input type="hidden" name="lab_orders[${rowCount}][service_id]" class="service-id">
+                        <input type="hidden" name="lab_orders[${rowCount}][service_name]" class="service-name">
+                        <div class="service-results position-absolute w-100 bg-white border rounded shadow-sm" style="display: none; z-index: 1000; max-height: 200px; overflow-y: auto;"></div>
+                    </td>
+                    <td><input type="text" class="form-control form-control-sm" name="lab_orders[${rowCount}][service_code]" placeholder="Service code" readonly></td>
+                    <td class="text-center">
+                        <button type="button" class="btn btn-sm btn-danger removeRow2">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </td>
                 `;
-                medicationContainer.appendChild(newMed);
-                
-                newMed.querySelector('button').addEventListener('click', function() {
-                    newMed.remove();
-                });
+                itemsBody.appendChild(newRow);
+                updateRemoveButtons();
             });
         }
 
-        if (saveMedBtn) {
-            saveMedBtn.addEventListener('click', function() {
-                const medications = [];
-                document.querySelectorAll('.medication-item').forEach(item => {
-                    const inputs = item.querySelectorAll('input, select, textarea');
-                    if (inputs[0]?.value) {
-                        medications.push({
-                            drug_name: inputs[0]?.value,
-                            route: inputs[1]?.value,
-                            dose: inputs[2]?.value,
-                            dose_units: inputs[3]?.value,
-                            frequency: inputs[4]?.value,
-                            duration: inputs[5]?.value,
-                            duration_unit: inputs[6]?.value,
-                            instructions: inputs[7]?.value
-                        });
+        // Remove Row Functionality
+        function updateRemoveButtons() {
+            const rows = itemsBody.querySelectorAll('.item-row');
+            rows.forEach((row, idx) => {
+                const btn = row.querySelector('.removeRow2');
+                if (btn) {
+                    btn.style.display = rows.length > 1 ? '' : 'none';
+                    btn.onclick = function() {
+                        row.remove();
+                        updateRowIndexes();
+                    };
+                }
+            });
+        }
+        function updateRowIndexes() {
+            const rows = itemsBody.querySelectorAll('.item-row');
+            rows.forEach((row, idx) => {
+                row.querySelectorAll('input, select, textarea').forEach(input => {
+                    if (input.name) {
+                        input.name = input.name.replace(/lab_orders\[\d+\]/, `lab_orders[${idx}]`);
                     }
                 });
-                
-                localStorage.setItem('medications', JSON.stringify(medications));
-                alert('✓ Medications saved successfully!');
+                row.querySelector('td').textContent = idx + 1;
+            });
+            updateRemoveButtons();
+        }
+        updateRemoveButtons();
+
+        // Service Search Logic (unchanged)
+        if (itemsBody) {
+            itemsBody.addEventListener('input', function(e) {
+                if (e.target.classList.contains('service-search')) {
+                    const input = e.target;
+                    const row = input.closest('.item-row');
+                    const resultsDiv = row.querySelector('.service-results');
+                    clearTimeout(serviceSearchTimeout);
+                    const query = input.value.trim();
+                    if (query.length < 2) {
+                        resultsDiv.style.display = 'none';
+                        return;
+                    }
+                    serviceSearchTimeout = setTimeout(() => {
+                        fetch(`{{ route('bills.serviceSearch') }}?query=${encodeURIComponent(query)}`, {
+                            headers: {
+                                'Accept': 'application/json',
+                                'X-Requested-With': 'XMLHttpRequest'
+                            }
+                        })
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Network response was not ok');
+                            }
+                            return response.json();
+                        })
+                        .then(services => {
+                            if (services.length === 0) {
+                                resultsDiv.innerHTML = '<div class="p-3 text-muted">No services found</div>';
+                            } else {
+                                resultsDiv.innerHTML = services.map(service => `
+                                    <div class="service-item p-2 border-bottom" style="cursor: pointer;" 
+                                        data-id="${service.id}" 
+                                        data-name="${service.name}" 
+                                        data-code="${service.code || ''}" 
+                                        data-price="${service.price || 0}">
+                                        <div class="fw-semibold">${service.name}</div>
+                                        <small class="text-muted">${service.code || ''} | Rs. ${parseFloat(service.price || 0).toFixed(2)}</small>
+                                    </div>
+                                `).join('');
+                            }
+                            resultsDiv.style.display = 'block';
+                        })
+                        .catch(err => {
+                            console.error('Search error:', err);
+                            resultsDiv.innerHTML = '<div class="p-3 text-danger">Error searching services</div>';
+                            resultsDiv.style.display = 'block';
+                        });
+                    }, 300);
+                }
+            });
+
+            itemsBody.addEventListener('click', function(e) {
+                const item = e.target.closest('.service-item');
+                if (item) {
+                    const row = item.closest('.item-row');
+                    const serviceInput = row.querySelector('.service-search');
+                    const serviceId = row.querySelector('.service-id');
+                    const serviceName = row.querySelector('.service-name');
+                    const resultsDiv = row.querySelector('.service-results');
+                    const id = item.dataset.id;
+                    const name = item.dataset.name;
+                    const code = item.dataset.code || '';
+                    const price = parseFloat(item.dataset.price) || 0;
+                    serviceId.value = id;
+                    serviceName.value = name;
+                    serviceInput.value = name;
+                    // Optionally fill code/price fields if you want:
+                    row.querySelector('input[name*="service_code"]').value = code;
+                    // row.querySelector('input[name*="rate"]').value = price.toFixed(2); // Uncomment if you want to fill rate
+                    resultsDiv.style.display = 'none';
+                }
+            });
+
+            itemsBody.addEventListener('mouseover', function(e) {
+                const item = e.target.closest('.service-item');
+                if (item) item.style.backgroundColor = '#f8f9fa';
+            });
+            itemsBody.addEventListener('mouseout', function(e) {
+                const item = e.target.closest('.service-item');
+                if (item) item.style.backgroundColor = '';
             });
         }
 
-        // Add Disease Row
-        addDiseaseRowButton.addEventListener('click', function () {
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><input type="text" class="form-control form-control-sm" name="name[]" placeholder="Disease name" required></td>
-                <td><input type="text" class="form-control form-control-sm" name="duration_value[]" placeholder="Duration" required></td>
-                <td>
-                    <select class="form-select form-select-sm" name="duration_unit[]">
-                        <option value="">Select unit</option>
-                        <option value="days">Days</option>
-                        <option value="weeks">Weeks</option>
-                        <option value="months">Months</option>
-                        <option value="years">Years</option>
-                    </select>
-                </td>
-                <td><input type="checkbox" class="form-check-input" name="status[]" value="1" checked></td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-danger removeRow2">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </td>
-            `;
-            diseaseHistoryBody.appendChild(newRow);
-
-            // Add event listener to the remove button
-            const removeButton = newRow.querySelector('.removeRow2');
-            removeButton.addEventListener('click', function () {
-                newRow.remove();
-            });
-        });
-
-        // Add Drug Row
-        addDrugRowButton.addEventListener('click', function () {
-            const newRow = document.createElement('tr');
-            newRow.innerHTML = `
-                <td><input type="text" class="form-control form-control-sm" name="drug_name[]" placeholder="Drug name"></td>
-                <td><input type="text" class="form-control form-control-sm" name="drug_dose[]" placeholder="Dose"></td>
-                <td>
-                    <select class="form-select form-select-sm" name="dose_unit[]">
-                        <option value="">Select unit</option>
-                        <option value="mg">mg</option>
-                        <option value="g">g</option>
-                        <option value="ml">ml</option>
-                        <option value="units">units</option>
-                    </select>
-                </td>
-                <td>
-                    <select class="form-select form-select-sm" name="drug_frequency[]">
-                        <option value="">Select</option>
-                        <option value="once_daily">Once Daily</option>
-                        <option value="twice_daily">Twice Daily</option>
-                        <option value="thrice_daily">Thrice Daily</option>
-                        <option value="as_needed">As Needed</option>
-                    </select>
-                </td>
-                <td><input type="text" class="form-control form-control-sm" name="drug_for[]" placeholder="Condition"></td>
-                <td><input type="checkbox" class="form-check-input" name="drug_status[]" value="1" checked></td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-danger removeRow2">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </td>
-            `;
-            drugHistoryBody.appendChild(newRow);
-
-            // Add event listener to the remove button
-            const removeButton = newRow.querySelector('.removeRow2');
-            removeButton.addEventListener('click', function () {
-                newRow.remove();
-            });
-        });
-
-        labOrdersBody.addEventListener('click', function (e) {
-            if (e.target.classList.contains('removeRow2') || e.target.closest('.removeRow2')) {
-                const row = e.target.closest('tr');
-                row.remove();
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.item-row')) {
+                document.querySelectorAll('.service-results').forEach(div => {
+                    div.style.display = 'none';
+                });
             }
         });
-
-         // Add Lab Order Row
-         addLaborderRowButton.addEventListener('click', function () {
-            const newRow = document.createElement('tr');
-            const rowCount = labOrdersBody.querySelectorAll('tr').length + 1;
-            newRow.innerHTML = `
-                <td>${rowCount}</td>
-                <td><input type="text" class="form-control form-control-sm" name="test_service[]" placeholder="Test or service name" required></td>
-                <td><input type="text" class="form-control form-control-sm" name="service_code[]" placeholder="Service code" readonly></td>
-                <td><input type="text" class="form-control form-control-sm" name="service_for[]" placeholder="Service category" readonly></td>
-                <td><input type="text" class="form-control form-control-sm" name="service_type[]" placeholder="Service type" readonly></td>
-                <td class="text-center">
-                    <button type="button" class="btn btn-sm btn-danger removeRow2">
-                        <i class="bi bi-x"></i>
-                    </button>
-                </td>
-            `;
-            labOrdersBody.appendChild(newRow);
-
-            // Add event listener to the remove button
-            const removeButton = newRow.querySelector('.removeRow2');
-            removeButton.addEventListener('click', function () {
-                newRow.remove();
-            });
-        });
-    
-        
     });
 </script>
+@endpush
 
 <!-- Visit History Modal -->
 <div class="modal fade" id="visitHistoryModal" tabindex="-1" aria-labelledby="visitHistoryModalLabel" aria-hidden="true">
@@ -981,6 +912,7 @@
         var visitHistoryModal = new bootstrap.Modal(document.getElementById('visitHistoryModal'));
         visitHistoryModal.show();
     });
+
 </script>
 
 @endsection
